@@ -7,8 +7,8 @@
 | 1 | Create an empty public GitHub repository | You | Done: `YangL2026/numbergame` |
 | 2 | Attach the repository; commit `SPEC.md` and `PROGRESS.md` | Claude | Done |
 | 3 | Build Prototype A (track, three item types, placement run) | Claude | Done |
-| 4 | Turn on GitHub Pages and open the game on the laptop | You | Next |
-| 5 | Try Prototype A yourself and report problems | You | Not started |
+| 4 | Turn on GitHub Pages and open the game on the laptop | You | Done: https://yangl2026.github.io/numbergame/ |
+| 5 | Try Prototype A yourself and report problems | You | Next |
 | 6 | Three sessions with her, watched without helping; notes in `NOTES.md` | You | Not started |
 | 7 | Review the notes and placement result; update the spec | Both | Not started |
 | 8 | Build Prototype B (stickers, sticker book, progress rules) | Claude | Not started |
@@ -33,3 +33,4 @@
 - Step 3 done: Prototype A built and pushed. Spec updated to 0.4 to match what was built.
 - Checked with a simulated player in a headless browser: a perfect player passes S1-S6 in three sessions and is placed at the top; a player who misses every cup item is placed at S3; arrow keys, the on-screen buttons, and clicking the track all work; no page errors.
 - Not yet checked: sound (the test browser has no speakers), a real trackpad, and phone layout (the track does not fit a phone yet; that is the sharing release).
+- Step 4 done: GitHub Pages is on and the start screen loads at https://yangl2026.github.io/numbergame/.
