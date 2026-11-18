@@ -1,0 +1,22 @@
+{
+  "placement": { "probes": 6, "pass": 5 },
+  "mastery": { "window": 20, "accuracy": 0.85, "days": 2, "fallbackWindow": 10, "fallbackAccuracy": 0.5 },
+  "skills": [
+    { "id": "S1", "type": "flash", "given": 0, "added": [1, 5], "track": 10, "enabled": true,
+      "demo": [[0, 2], [0, 3]] },
+    { "id": "S2", "type": "flash", "given": 5, "added": [1, 5], "track": 10, "enabled": true,
+      "intro": "five", "demo": [[5, 2]] },
+    { "id": "S3", "type": "cup", "given": [3, 8], "added": [1, 2], "maxTotal": 10, "track": 10, "enabled": true,
+      "demo": [[4, 1], [6, 2]] },
+    { "id": "S4", "type": "cup", "given": [5, 9], "added": [1, 3], "maxTotal": 12, "track": 20, "enabled": true },
+    { "id": "S5", "type": "ten", "given": 10, "added": [1, 9], "track": 20, "enabled": true,
+      "intro": "ten", "demo": [[10, 2], [10, 4]] },
+    { "id": "S6", "type": "cup", "given": [11, 17], "added": [1, 3], "maxTotal": 20, "track": 20, "enabled": true },
+    { "id": "S7", "type": "more", "start": [3, 9], "gap": [1, 6], "track": 20, "enabled": false },
+    { "id": "S8", "type": "more", "start": [1, 9], "flag": 10, "track": 10, "enabled": false },
+    { "id": "S9", "type": "ten", "note": "up arrow as a jump of ten; two tens plus ones", "enabled": false },
+    { "id": "S10", "type": "cup", "note": "9 + n and 8 + n, crossing ten", "enabled": false },
+    { "id": "S11", "type": "new", "note": "doubles and near-doubles", "enabled": false },
+    { "id": "S12", "type": "new", "note": "a 0-100 track", "enabled": false }
+  ]
+}

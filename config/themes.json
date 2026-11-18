@@ -1,0 +1,8 @@
+{
+  "sets": [
+    { "id": "princess", "one": "dot", "five": "🌸", "ten": "👑" },
+    { "id": "animals", "one": "dot", "five": "🐱", "ten": "🦁" },
+    { "id": "space", "one": "dot", "five": "⭐", "ten": "🚀" }
+  ],
+  "stickers": ["👑", "🦄", "🧁", "💎", "🌸", "🦋", "🌈", "🎀", "⭐"]
+}

@@ -6,8 +6,8 @@
 |---|---|---|---|
 | 1 | Create an empty public GitHub repository | You | Done: `YangL2026/numbergame` |
 | 2 | Attach the repository; commit `SPEC.md` and `PROGRESS.md` | Claude | Done |
-| 3 | Build Prototype A (track, three item types, placement run) | Claude | Next |
-| 4 | Turn on GitHub Pages and open the game on the laptop | You | Not started |
+| 3 | Build Prototype A (track, three item types, placement run) | Claude | Done |
+| 4 | Turn on GitHub Pages and open the game on the laptop | You | Next |
 | 5 | Try Prototype A yourself and report problems | You | Not started |
 | 6 | Three sessions with her, watched without helping; notes in `NOTES.md` | You | Not started |
 | 7 | Review the notes and placement result; update the spec | Both | Not started |
@@ -30,3 +30,6 @@
 - Step 2 blocked: attaching the repository failed with "link your GitHub account to let Claude access repositories".
 - Installed the Claude GitHub App on `numbergame` (from github.com/apps/claude); attaching then worked.
 - Step 2 done: `SPEC.md`, `PROGRESS.md`, and a `.gitignore` that keeps `NOTES.md` out of the repository were committed.
+- Step 3 done: Prototype A built and pushed. Spec updated to 0.4 to match what was built.
+- Checked with a simulated player in a headless browser: a perfect player passes S1-S6 in three sessions and is placed at the top; a player who misses every cup item is placed at S3; arrow keys, the on-screen buttons, and clicking the track all work; no page errors.
+- Not yet checked: sound (the test browser has no speakers), a real trackpad, and phone layout (the track does not fit a phone yet; that is the sharing release).

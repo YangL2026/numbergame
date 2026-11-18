@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Number Game: for parents</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="parent" id="parent"></main>
+  <script type="module">
+    import { loadConfig } from './engine/config.js';
+    import * as store from './engine/store.js';
+    import { activeSkills } from './engine/scheduler.js';
+
+    const root = document.getElementById('parent');
+    const config = await loadConfig();
+    const data = store.load();
+    const profile = data.profiles[data.active];
+    const skills = activeSkills(config);
+
+    const median = (list) => {
+      if (!list.length) return null;
+      const s = [...list].sort((a, b) => a - b);
+      const mid = Math.floor(s.length / 2);
+      return s.length % 2 ? s[mid] : (s[mid - 1] + s[mid]) / 2;
+    };
+
+    const P = profile.placement;
+    let status;
+    if (!profile.log.length) status = 'No sessions played yet.';
+    else if (!P.done) status = 'Placement is still running, currently checking ' + skills[P.index].id + '.';
+    else if (P.top) status = 'Placement passed every skill built so far. Current skill: ' + profile.skill + '.';
+    else status = 'Placement finished. Current skill: ' + profile.skill + '.';
+
+    const rows = skills.map((skill) => {
+      const tries = profile.log.filter((r) => r.skill === skill.id && !r.retry);
+      const right = tries.filter((r) => r.first_try).length;
+      const med = median(tries.map((r) => r.response_ms));
+      const state = skill.id === profile.skill ? 'current' : profile.passed.includes(skill.id) ? 'passed' : '';
+      return `<tr><td>${skill.id}</td><td>${skill.type}</td><td>${state}</td>
+        <td>${tries.length ? right + ' of ' + tries.length : ''}</td>
+        <td>${med === null ? '' : (med / 1000).toFixed(1) + ' s'}</td></tr>`;
+    }).join('');
+
+    root.innerHTML = `
+      <h1>Number Game: for parents</h1>
+      <p>${status}</p>
+      <p class="note">Sessions played: ${profile.sessions.length}. Everything here is stored only in this browser.</p>
+      <h2>Skills</h2>
+      <table>
+        <tr><th>Skill</th><th>Type</th><th>Status</th><th>Right on first try</th><th>Median time</th></tr>
+        ${rows}
+      </table>
+      <p class="note">Time is rough: it includes moving the marker.</p>
+      <div class="row">
+        <button class="btn" id="export">Download data</button>
+        <button class="btn danger" id="reset">Erase all progress</button>
+        <a class="btn" href="index.html">Back to the game</a>
+      </div>`;
+
+    document.getElementById('export').addEventListener('click', () => {
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'numbergame-' + store.today() + '.json';
+      link.click();
+    });
+
+    const resetBtn = document.getElementById('reset');
+    resetBtn.addEventListener('click', () => {
+      if (resetBtn.dataset.armed) { store.reset(); location.reload(); return; }
+      resetBtn.dataset.armed = '1';
+      resetBtn.textContent = 'Click again to erase';
+    });
+  </script>
+</body>
+</html>

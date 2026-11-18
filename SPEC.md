@@ -1,6 +1,6 @@
 # Number game: specification
 
-Version 0.3, 2026-11-18. Nothing is built yet. Every number here is a starting value to tune after watching her play.
+Version 0.4, 2026-11-18. Prototype A is built. Every number here is a starting value to tune after watching her play.
 
 ## 1. Goal
 
@@ -85,8 +85,8 @@ numbergame/
 
 | Action | Keys | Trackpad |
 |---|---|---|
-| Move the marker one cell | Left and right arrows | Click a cell (the whole column above it counts) |
-| Confirm the answer | Spacebar | Click the marker's cell again |
+| Move the marker one cell | Left and right arrows | Click a cell (the whole column above it counts), or the on-screen ◀ ▶ buttons |
+| Confirm the answer | Spacebar or Enter | The on-screen ✓ button, or click the marker's cell again |
 | Start, continue | Spacebar | Click the button |
 
 - Both inputs always work. There is no setting.
@@ -111,13 +111,13 @@ Required before the link is shared. These are known pitfalls of web pages on pho
 
 ## 6. Item types
 
-Each type begins, the first time only, with two animated examples that play by themselves.
+Each skill begins, the first time only, with up to two animated examples that play by themselves under the word "Watch". The examples for a skill are listed in `config/skills.json`. A plus sign sits between the given part and the loose ones.
 
 ### 6.1 Flash
 
 - **Shows:** loose dots for 1 second, then hides them. From S2 on, a five-token stays visible and only the loose dots are hidden.
 - **Asks:** how many in all.
-- **After a miss:** the dots return and stay, arranged in a clear group. She moves the marker to match and confirms.
+- **After a miss:** the dots return and stay. The marker goes back to its start, and each hop lights one dot, as in the Cup walkthrough.
 
 ### 6.2 Cup
 
@@ -270,7 +270,7 @@ Also stored: current skill, per-skill history, stickers earned, token set, setti
 
 ## 13. Build order and testing
 
-1. **Prototype A:** track, marker, both inputs, the Flash, Cup, and Ten-token types, and the placement run over S1–S6. No stickers.
+1. **Prototype A (built):** track, marker, both inputs, the Flash, Cup, and Ten-token types, and the placement run over S1–S6. No stickers, no token choice (the first theme is used). A bare parent page shows the placement result, with download and erase buttons.
 2. Watch three sessions without helping. Record:
    - Does she ask to play again?
    - Arrows or trackpad, and is either one a struggle?
@@ -282,6 +282,10 @@ Also stored: current skill, per-skill history, stickers earned, token set, setti
 5. **Sharing release:** touch rules from section 5, profiles, extra themes, the manifest, and data versioning. Tried on a real phone and tablet before the link goes out.
 
 Change one thing per version and note it in section 17.
+
+### Testing switches
+
+Added to the game's address: `?reset` erases saved data, `?nolimit` lifts the two-sessions-a-day limit, `?speed=4` shortens the pauses. `tests/play.py` plays the game with a simulated child.
 
 ## 14. Later, not in version 1
 
@@ -305,3 +309,4 @@ Dated notes on what a child does away from the game decide where the ladder goes
 - 0.1 (2026-11-15): first version.
 - 0.2 (2026-11-18): placement run replaces starting at S1; How many more type and S7 added; S8–S12 listed as disabled config entries; parent override of current skill; Prototype A covers three item types; observations section added.
 - 0.3 (2026-11-18): sharing by link added as a goal; touch and small-screen rules; profiles; several themes; data format version; Safari storage rule and home-screen manifest; observations moved to a private notes file; sharing release added to the build order.
+- 0.4 (2026-11-18): Prototype A built. On-screen ◀ ▶ ✓ buttons added; the Flash walkthrough now uses one hop per dot like the others; examples are set per skill; a bare parent page was brought forward; testing switches documented.
