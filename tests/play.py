@@ -27,8 +27,6 @@ with sync_playwright() as p:
     sessions = 1 if scenario=='shots' else 4
     for s in range(sessions):
         pg.wait_for_selector('.play-btn', timeout=60000); pg.keyboard.press('Space') if s else pg.click('.play-btn')
-        if scenario=='shots':
-            pg.wait_for_selector('.demo'); time.sleep(1.0); shot('01-demo-flash-shown'); time.sleep(1.2); shot('02-demo-hidden-hopping')
         n = 0
         while True:
             try:
@@ -53,6 +51,11 @@ with sync_playwright() as p:
                 shot('30-guided-start'); pg.keyboard.press('ArrowRight')
             elif mode == 'ok':
                 shot('31-guided-landed'); pg.keyboard.press('Space')
+                if scenario=='shots' and 'turn' not in taken:
+                    try:
+                        pg.wait_for_selector('.yourturn', timeout=1200); time.sleep(0.5); shot('turn')
+                        pg.wait_for_selector('.loose:not(.hidden) .tok', timeout=6000); time.sleep(0.3); shot('flash-shown')
+                    except Exception: pass
             time.sleep(0.03)
         time.sleep(0.3)
     data = pg.evaluate("JSON.parse(localStorage.getItem('numbergame'))")

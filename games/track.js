@@ -18,11 +18,10 @@ export class Track {
     this.root.dataset.max = String(max);
     this.cells = [];
     for (let i = 0; i <= max; i++) {
-      // Blocks of five: 0-5, 6-10, 11-15, 16-20.
-      const block = i <= 5 ? 0 : Math.ceil((i - 5) / 5);
       const cell = document.createElement('button');
       cell.type = 'button';
-      cell.className = 'cell ' + (block % 2 === 0 ? 'blockA' : 'blockB');
+      // Every fifth number is a quiet landmark.
+      cell.className = 'cell' + (i % 5 === 0 ? ' landmark' : '');
       cell.innerHTML = '<span class="slot"></span><span class="num">' + i + '</span>';
       cell.addEventListener('pointerdown', (e) => {
         if (!e.isPrimary) return; // ignore a resting palm or second finger

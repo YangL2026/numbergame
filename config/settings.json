@@ -1,7 +1,8 @@
 {
   "itemsPerSession": 12,
   "sessionsPerDay": 2,
-  "flashMs": 1000,
+  "flashMs": 1500,
+  "fadeMs": 600,
   "reviewShare": 0.3,
   "requeueDistance": 3,
   "sounds": true

@@ -12,6 +12,7 @@ export async function runSession({ root, config, profile, theme, sound, save, sp
   const S = config.settings;
   const total = S.itemsPerSession;
   const wait = (ms) => sleep(ms / speed);
+  root.style.setProperty('--fade', (S.fadeMs / speed) + 'ms');
 
   root.innerHTML = `
     <div class="play">
@@ -118,9 +119,12 @@ export async function runSession({ root, config, profile, theme, sound, save, sp
     if (pic.flashes) pic.hideLoose();
     stage.appendChild(pic.el);
     if (pic.flashes) {
-      await wait(600);
+      pic.cue();
+      await wait(700);
       pic.showLoose();
       await wait(S.flashMs);
+      pic.fadeLoose();
+      await wait(S.fadeMs);
       pic.hideLoose();
     } else {
       await wait(300);
@@ -166,41 +170,40 @@ export async function runSession({ root, config, profile, theme, sound, save, sp
     await wait(300);
   }
 
-  // A worked example that plays by itself.
-  async function demo(item) {
-    play.classList.add('demo');
-    q.textContent = 'Watch';
-    const pic = await present(item);
-    for (let i = 0; i < item.added; i++) {
-      await wait(650);
-      track.hop(1);
-    }
-    await wait(500);
-    btnOk.classList.add('pulse');
-    await wait(700);
-    btnOk.classList.remove('pulse');
-    await celebrate(pic);
-    q.textContent = QUESTION;
-    play.classList.remove('demo');
+  // Warm-up: the dots stay on screen, faded. Each hop makes one solid.
+  async function warmup(item) {
+    track.build(item.track);
+    track.set(item.given);
+    stage.innerHTML = '';
+    const pic = GAMES[item.type].build(item, theme);
+    stage.appendChild(pic.el);
+    await guided(item, pic);
   }
 
-  // The first time a skill appears: token meaning, then worked examples.
+  async function card(node, ms) {
+    play.classList.add('card');
+    stage.innerHTML = '';
+    stage.appendChild(node);
+    await wait(ms);
+    play.classList.remove('card');
+  }
+
+  // The first time a skill appears: token meaning, warm-ups, then "Your turn".
   async function introduce(skillId) {
     if (profile.demos[skillId]) return;
     const skill = activeSkills(config).find((s) => s.id === skillId);
     if (!skill) return;
-    if (skill.intro) {
-      play.classList.add('demo');
-      q.textContent = 'Watch';
-      stage.innerHTML = '';
-      stage.appendChild(tokenIntro(skill.intro, theme));
-      await wait(3200);
-      play.classList.remove('demo');
+    if (skill.intro) await card(tokenIntro(skill.intro, theme), 3200);
+    const warmups = skill.warmup || [];
+    for (const [given, added] of warmups) {
+      await warmup(fixedItem(skill, given, added));
     }
-    for (const [given, added] of skill.demo || []) {
-      await demo(fixedItem(skill, given, added));
+    if (warmups.length) {
+      const turn = document.createElement('p');
+      turn.className = 'yourturn';
+      turn.textContent = 'Your turn';
+      await card(turn, 1800);
     }
-    q.textContent = QUESTION;
     profile.demos[skillId] = true;
     save();
   }

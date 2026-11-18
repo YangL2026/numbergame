@@ -57,8 +57,10 @@ export function assemble(givenEl, loose, flashes) {
     el: picture,
     loose: loose.dots,
     flashes,
-    hideLoose() { loose.el.classList.add('hidden'); },
-    showLoose() { loose.el.classList.remove('hidden'); },
+    hideLoose() { loose.el.classList.remove('fading', 'ready'); loose.el.classList.add('hidden'); },
+    showLoose() { loose.el.classList.remove('hidden', 'fading', 'ready'); },
+    fadeLoose() { loose.el.classList.add('fading'); },
+    cue() { loose.el.classList.add('ready'); },
   };
 }
 

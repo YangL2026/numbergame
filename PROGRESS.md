@@ -34,3 +34,5 @@
 - Checked with a simulated player in a headless browser: a perfect player passes S1-S6 in three sessions and is placed at the top; a player who misses every cup item is placed at S3; arrow keys, the on-screen buttons, and clicking the track all work; no page errors.
 - Not yet checked: sound (the test browser has no speakers), a real trackpad, and phone layout (the track does not fit a phone yet; that is the sharing release).
 - Step 4 done: GitHub Pages is on and the start screen loads at https://yangl2026.github.io/numbergame/.
+- Step 5, first round of feedback from Yang: (1) the "Watch" examples were confusing and easy to miss; (2) the one-second flash was too short, gone in a blink; (3) the pink and blue blocks on the track drew attention without meaning anything.
+- Changes made (spec 0.5): hands-on warm-ups followed by a "Your turn" card; flash raised to 1.5 seconds with a fade; track in one color with a quiet landmark at every five. Re-tested with the simulated players; no errors.

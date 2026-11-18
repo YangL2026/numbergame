@@ -1,6 +1,6 @@
 # Number game: specification
 
-Version 0.4, 2026-11-18. Prototype A is built. Every number here is a starting value to tune after watching her play.
+Version 0.5, 2026-11-18. Prototype A is built. Every number here is a starting value to tune after watching her play.
 
 ## 1. Goal
 
@@ -78,7 +78,7 @@ numbergame/
 ### Number track
 
 - Runs 0–10 for skills S1–S3 and 0–20 from S4 on.
-- Cells are colored in blocks of five (0–5, 6–10, 11–15, 16–20), with every numeral shown.
+- All cells share one neutral color, with every numeral shown. Every fifth cell (0, 5, 10, 15, 20) is slightly darker as a quiet landmark.
 - The marker is a large dot sitting on one cell.
 
 ## 5. Input
@@ -111,11 +111,11 @@ Required before the link is shared. These are known pitfalls of web pages on pho
 
 ## 6. Item types
 
-Each skill begins, the first time only, with up to two animated examples that play by themselves under the word "Watch". The examples for a skill are listed in `config/skills.json`. A plus sign sits between the given part and the loose ones.
+Each skill begins, the first time only, with two or three warm-up rounds that she plays herself: the dots stay on screen, faded, and each hop turns one solid, then she confirms. After the warm-ups a "Your turn" card appears, and from then on the dots flash and hide. The warm-ups for a skill are listed in `config/skills.json`, and they do not count as session items. A plus sign sits between the given part and the loose ones.
 
 ### 6.1 Flash
 
-- **Shows:** loose dots for 1 second, then hides them. From S2 on, a five-token stays visible and only the loose dots are hidden.
+- **Shows:** loose dots for 1.5 seconds, then fades them out over 0.6 seconds. The empty box pulses just before the dots appear. From S2 on, a five-token stays visible and only the loose dots are hidden.
 - **Asks:** how many in all.
 - **After a miss:** the dots return and stay. The marker goes back to its start, and each hop lights one dot, as in the Cup walkthrough.
 
@@ -128,7 +128,7 @@ Each skill begins, the first time only, with up to two animated examples that pl
 
 ### 6.3 Ten-token
 
-- **Shows:** one ten-token and 1–9 loose ones, flashed for 1 second like the Flash type. The token stays visible.
+- **Shows:** one ten-token and 1–9 loose ones, flashed like the Flash type. The token stays visible.
 - **Asks:** how many in all.
 - **Marker starts:** on 10.
 - **After a miss:** the marker makes one big jump from 0 to 10 by itself, then she hops the ones as in the Cup walkthrough.
@@ -208,7 +208,7 @@ Stages planned beyond S7, entered in the config with `"enabled": false` until bu
 ## 10. Sound and words
 
 - **Sounds:** "boing" on each hop, a soft tone on landing, a chime on a sticker. One switch turns them all off.
-- **Words on screen:** "How many?", "How many hops?", "Play", "Sticker book", "See you tomorrow".
+- **Words on screen:** "How many?", "How many hops?", "Your turn", "Play", "Sticker book", "See you tomorrow".
 - **Speech:** only the speaker button. The math itself is silent.
 - **Number names:** off. See open question 1.
 
@@ -266,7 +266,7 @@ Also stored: current skill, per-skill history, stickers earned, token set, setti
 - Sessions per day.
 - Buttons: export data, import data, reset, add or remove a profile.
 
-**Fixed in `config/settings.json`, not on the page:** flash duration (1000 ms), sessions per day (2), session mix (70/30), mastery rule, placement rule (6 probes, 5 to pass), requeue distance (3 items).
+**Fixed in `config/settings.json`, not on the page:** flash duration (1500 ms) and fade (600 ms), sessions per day (2), session mix (70/30), mastery rule, placement rule (6 probes, 5 to pass), requeue distance (3 items).
 
 ## 13. Build order and testing
 
@@ -298,7 +298,7 @@ Added to the game's address: `?reset` erases saved data, `?nolimit` lifts the tw
 
 1. **Number names.** Should the game say "fifteen" once after a correct teen answer? It would link the word to the numeral, and it conflicts with keeping the math silent. Currently off.
 2. **Flash with arrows.** On S1 the marker starts at 0, so answering 4 takes four presses. If that turns into counting, start the marker elsewhere or favor clicking for this type.
-3. **Flash duration.** One second may be too short or too long for her; adjust after Prototype A.
+3. **Flash duration.** Raised from 1 second to 1.5 seconds plus a fade after the first adult try. Long enough to survive a blink, short enough that five dots are hard to count one by one. Adjust after watching her.
 
 ## 16. Observations at home
 
@@ -310,3 +310,4 @@ Dated notes on what a child does away from the game decide where the ladder goes
 - 0.2 (2026-11-18): placement run replaces starting at S1; How many more type and S7 added; S8–S12 listed as disabled config entries; parent override of current skill; Prototype A covers three item types; observations section added.
 - 0.3 (2026-11-18): sharing by link added as a goal; touch and small-screen rules; profiles; several themes; data format version; Safari storage rule and home-screen manifest; observations moved to a private notes file; sharing release added to the build order.
 - 0.4 (2026-11-18): Prototype A built. On-screen ◀ ▶ ✓ buttons added; the Flash walkthrough now uses one hop per dot like the others; examples are set per skill; a bare parent page was brought forward; testing switches documented.
+- 0.5 (2026-11-18): after the first adult playthrough. Hands-on warm-ups and a "Your turn" card replace the self-playing "Watch" examples; the flash is longer and fades out; the track is one color with a landmark at every five.
