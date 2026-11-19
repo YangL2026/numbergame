@@ -36,3 +36,7 @@
 - Step 4 done: GitHub Pages is on and the start screen loads at https://yangl2026.github.io/numbergame/.
 - Step 5, first round of feedback from Yang: (1) the "Watch" examples were confusing and easy to miss; (2) the one-second flash was too short, gone in a blink; (3) the pink and blue blocks on the track drew attention without meaning anything.
 - Changes made (spec 0.5): hands-on warm-ups followed by a "Your turn" card; flash raised to 1.5 seconds with a fade; track in one color with a quiet landmark at every five. Re-tested with the simulated players; no errors.
+
+### 2026-11-19
+- Step 5, second round: warm-ups, "Your turn", and the longer flash feel right. New feedback: the flower appeared and vanished before its meaning was clear.
+- Changes made (spec 0.6): the token card shows ones = token = numeral and waits for ✓; tokens carry their numeral under them; the marker jumps from 0 to 5 for the flower as it does to 10 for the crown. Re-tested; no errors.

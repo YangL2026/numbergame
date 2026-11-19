@@ -2,5 +2,5 @@
 import { token, looseGroup, assemble } from './pieces.js';
 
 export function build(item, theme) {
-  return assemble(token('ten', theme), looseGroup(item.added, theme), true);
+  return assemble(token('ten', theme), looseGroup(item.added, theme), true, 10);
 }

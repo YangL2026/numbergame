@@ -1,6 +1,6 @@
 # Number game: specification
 
-Version 0.5, 2026-11-18. Prototype A is built. Every number here is a starting value to tune after watching her play.
+Version 0.6, 2026-11-19. Prototype A is built. Every number here is a starting value to tune after watching her play.
 
 ## 1. Goal
 
@@ -203,7 +203,9 @@ Stages planned beyond S7, entered in the config with `"enabled": false` until bu
 - **Sticker book:** a grid showing every sticker earned, in order. No arranging in version 1.
 - **Tokens:** each child picks one set at first launch. Each set has a one, a five, and a ten, for example 🫧 / 🌸 / 👑. The set changes only from the parent page.
 - **Themes:** `config/themes.json` holds several token and sticker sets (for example princess, animals, space, vehicles), so other children have something that suits them.
-- **Meaning of a token:** the first time a five or ten appears, an animation shows that many ones merging into it.
+- **Meaning of a token:** the first time a five or ten appears, a card shows that many ones, an equals sign, the token, and its numeral (●●●●● = 🌸 = 5). The card stays until she presses ✓.
+- **Token label:** a token always has its numeral beneath it, the way the cup carries its number.
+- **Token jump:** in warm-ups and walkthroughs, the marker makes one big jump from 0 to the token's number before the hops begin.
 
 ## 10. Sound and words
 
@@ -311,3 +313,4 @@ Dated notes on what a child does away from the game decide where the ladder goes
 - 0.3 (2026-11-18): sharing by link added as a goal; touch and small-screen rules; profiles; several themes; data format version; Safari storage rule and home-screen manifest; observations moved to a private notes file; sharing release added to the build order.
 - 0.4 (2026-11-18): Prototype A built. On-screen ◀ ▶ ✓ buttons added; the Flash walkthrough now uses one hop per dot like the others; examples are set per skill; a bare parent page was brought forward; testing switches documented.
 - 0.5 (2026-11-18): after the first adult playthrough. Hands-on warm-ups and a "Your turn" card replace the self-playing "Watch" examples; the flash is longer and fades out; the track is one color with a landmark at every five.
+- 0.6 (2026-11-19): the token introduction no longer passes by itself; it shows ones = token = numeral and waits for ✓. Tokens carry their numeral. The big jump from 0 now applies to the five-token as well as the ten.

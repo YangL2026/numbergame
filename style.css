@@ -111,7 +111,10 @@ button {
 
 .intro { display: flex; align-items: center; gap: clamp(16px, 4vw, 48px); }
 .intro-ones.rows { grid-template-columns: repeat(5, var(--dot)); }
-.intro-arrow { font-size: clamp(2.5rem, 8vh, 4rem); color: #b9b6c4; }
+.intro-sign { font-size: clamp(2.5rem, 8vh, 4rem); font-weight: 700; color: #b9b6c4; }
+.intro-num { font-size: clamp(4rem, 16vh, 8rem); font-weight: 800; animation: pop 0.6s ease-out 1.2s both; }
+.given { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.given-num { font-size: clamp(1.6rem, 5vh, 2.6rem); font-weight: 800; }
 .intro-token { animation: pop 0.6s ease-out 0.8s both; }
 
 /* ---------- number track ---------- */
@@ -156,7 +159,8 @@ button {
 .pulse { animation: pulse 0.9s ease-in-out infinite; }
 
 /* While a card is showing, only the card is on screen. */
-.card .q, .card .speak, .card .trackwrap { visibility: hidden; }
+.card .q, .card .speak, .card .track, .card .ctl.left, .card .ctl.right { visibility: hidden; }
+.card.timed .controls { visibility: hidden; }
 .yourturn { font-size: clamp(3rem, 12vh, 6rem); font-weight: 800; margin: 0; color: var(--mark-dark); animation: pop 0.4s ease-out; }
 /* In a walkthrough the back button is not used. */
 .guided .ctl.left { visibility: hidden; }

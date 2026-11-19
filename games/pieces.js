@@ -44,11 +44,13 @@ export function looseGroup(n, theme) {
 }
 
 // Puts the given part (token or cup) beside the loose ones.
-export function assemble(givenEl, loose, flashes) {
+export function assemble(givenEl, loose, flashes, value) {
   const picture = el('div', 'picture');
   if (givenEl) {
     const wrap = el('div', 'given');
     wrap.appendChild(givenEl);
+    // A token always carries its number, the way the cup does.
+    if (value) wrap.appendChild(el('span', 'given-num')).textContent = String(value);
     picture.appendChild(wrap);
     picture.appendChild(el('span', 'plus')).textContent = '+';
   }
@@ -70,10 +72,11 @@ export function tokenIntro(kind, theme) {
   const card = el('div', 'intro');
   const ones = el('div', 'intro-ones loose rows');
   for (let i = 0; i < count; i++) ones.appendChild(token('one', theme));
-  const arrow = el('span', 'intro-arrow');
-  arrow.textContent = '→';
+  const sign = (text) => { const s = el('span', 'intro-sign'); s.textContent = text; return s; };
   const big = token(kind, theme);
   big.classList.add('intro-token');
-  card.append(ones, arrow, big);
+  const num = el('span', 'intro-num');
+  num.textContent = String(count);
+  card.append(ones, sign('='), big, sign('='), num);
   return card;
 }

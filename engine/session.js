@@ -145,10 +145,11 @@ export async function runSession({ root, config, profile, theme, sound, save, sp
     pic.showLoose();
     pic.loose.forEach((dot) => dot.classList.add('dim'));
     await wait(500);
-    if (item.type === 'ten') {
+    if (item.type !== 'cup' && item.given > 0) {
+      // A token is one big jump from 0 to its number.
       track.set(0);
       await wait(500);
-      track.set(10, { sound: true, big: true });
+      track.set(item.given, { sound: true, big: true });
       await wait(700);
     } else {
       track.set(item.given);
@@ -180,12 +181,21 @@ export async function runSession({ root, config, profile, theme, sound, save, sp
     await guided(item, pic);
   }
 
+  // A full-screen card. With ms it passes by itself; without, it waits for ✓.
   async function card(node, ms) {
     play.classList.add('card');
+    play.classList.toggle('timed', Boolean(ms));
     stage.innerHTML = '';
     stage.appendChild(node);
-    await wait(ms);
-    play.classList.remove('card');
+    if (ms) {
+      await wait(ms);
+    } else {
+      await wait(1500);
+      btnOk.classList.add('pulse');
+      await waitOk();
+      btnOk.classList.remove('pulse');
+    }
+    play.classList.remove('card', 'timed');
   }
 
   // The first time a skill appears: token meaning, warm-ups, then "Your turn".
@@ -193,7 +203,7 @@ export async function runSession({ root, config, profile, theme, sound, save, sp
     if (profile.demos[skillId]) return;
     const skill = activeSkills(config).find((s) => s.id === skillId);
     if (!skill) return;
-    if (skill.intro) await card(tokenIntro(skill.intro, theme), 3200);
+    if (skill.intro) await card(tokenIntro(skill.intro, theme));
     const warmups = skill.warmup || [];
     for (const [given, added] of warmups) {
       await warmup(fixedItem(skill, given, added));
