@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 290" width="1470" height="435">
+<defs><g id="ear"><ellipse rx="14" ry="44" fill="var(--fur)" stroke="var(--line)" stroke-width="3"/><ellipse cy="4" rx="7" ry="30" fill="var(--inner)"/></g></defs>
+<rect width="980" height="290" fill="#fbf8f3"/><g transform="translate(110 150) scale(0.85)">
+      <g transform="translate(-24 -66) rotate(-14)">
+      <ellipse rx="12" ry="38" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <ellipse cy="4" rx="6" ry="26" fill="#ffc6d8"/></g><g transform="translate(24 -66) rotate(14)">
+      <ellipse rx="12" ry="38" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <ellipse cy="4" rx="6" ry="26" fill="#ffc6d8"/></g>
+      <ellipse cy="56" rx="40" ry="28" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <ellipse cx="-22" cy="80" rx="16" ry="8" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <ellipse cx="22" cy="80" rx="16" ry="8" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <circle r="52" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <circle cx="-32" cy="14" r="8" fill="#ffd3df"/><circle cx="32" cy="14" r="8" fill="#ffd3df"/>
+      <circle cx="-20" cy="-2" r="11" fill="#fff" stroke="#5a4a52" stroke-width="2.5"/>
+                   <circle cx="-20" cy="-2" r="7.5" fill="#5a4a52"/>
+                   <circle cx="-22.5" cy="-5" r="2.8" fill="#fff"/>
+                   <circle cx="-17.5" cy="0" r="1.3" fill="#fff"/><circle cx="20" cy="-2" r="11" fill="#fff" stroke="#5a4a52" stroke-width="2.5"/>
+                   <circle cx="20" cy="-2" r="7.5" fill="#5a4a52"/>
+                   <circle cx="17.5" cy="-5" r="2.8" fill="#fff"/>
+                   <circle cx="22.5" cy="0" r="1.3" fill="#fff"/><path d="M -4 13 L 4 13 L 0 18 Z" fill="#f08ab0"/><path d="M -6 22 Q 0 27 6 22" fill="none" stroke="#5a4a52" stroke-width="2.5" stroke-linecap="round"/>
+      <g transform="translate(38 -44) rotate(20)">
+        <path d="M 0 0 L -16 -11 L -16 11 Z M 0 0 L 16 -11 L 16 11 Z" fill="#ff7fa8" stroke="#5a4a52" stroke-width="2.5" stroke-linejoin="round"/>
+        <circle r="4.5" fill="#ffb3c9" stroke="#5a4a52" stroke-width="2.5"/></g>
+      </g><g transform="translate(280 150) scale(0.85)">
+      <g transform="translate(-24 -66) rotate(-18)">
+      <ellipse rx="12" ry="38" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <ellipse cy="4" rx="6" ry="26" fill="#ffc6d8"/></g><g transform="translate(24 -66) rotate(18)">
+      <ellipse rx="12" ry="38" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <ellipse cy="4" rx="6" ry="26" fill="#ffc6d8"/></g>
+      <ellipse cy="56" rx="40" ry="28" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <ellipse cx="-22" cy="80" rx="16" ry="8" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <ellipse cx="22" cy="80" rx="16" ry="8" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <circle r="52" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <circle cx="-32" cy="14" r="8" fill="#ffd3df"/><circle cx="32" cy="14" r="8" fill="#ffd3df"/>
+      <path d="M -29 -19 Q -20 -22 -11 -19" fill="none" stroke="#5a4a52" stroke-width="3" stroke-linecap="round"/>
+                   <path d="M 11 -22 Q 20 -27 29 -22" fill="none" stroke="#5a4a52" stroke-width="3" stroke-linecap="round"/><circle cx="-20" cy="-2" r="11" fill="#fff" stroke="#5a4a52" stroke-width="2.5"/>
+                   <circle cx="-17" cy="-6" r="7.5" fill="#5a4a52"/>
+                   <circle cx="-19.5" cy="-9" r="2.8" fill="#fff"/>
+                   <circle cx="-14.5" cy="-4" r="1.3" fill="#fff"/><circle cx="20" cy="-2" r="11" fill="#fff" stroke="#5a4a52" stroke-width="2.5"/>
+                   <circle cx="23" cy="-6" r="7.5" fill="#5a4a52"/>
+                   <circle cx="20.5" cy="-9" r="2.8" fill="#fff"/>
+                   <circle cx="25.5" cy="-4" r="1.3" fill="#fff"/><path d="M -4 13 L 4 13 L 0 18 Z" fill="#f08ab0"/><ellipse cx="4" cy="24" rx="4" ry="4.5" fill="#e8607f" stroke="#5a4a52" stroke-width="2.5"/>
+      <g transform="translate(38 -44) rotate(20)">
+        <path d="M 0 0 L -16 -11 L -16 11 Z M 0 0 L 16 -11 L 16 11 Z" fill="#ff7fa8" stroke="#5a4a52" stroke-width="2.5" stroke-linejoin="round"/>
+        <circle r="4.5" fill="#ffb3c9" stroke="#5a4a52" stroke-width="2.5"/></g>
+      <text x="52" y="-50" font-family="sans-serif" font-weight="800" font-size="34" fill="#b9a9c8">?</text></g><g transform="translate(450 150) scale(0.85)">
+      <g transform="translate(-24 -66) rotate(-14)">
+      <ellipse rx="12" ry="38" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <ellipse cy="4" rx="6" ry="26" fill="#ffc6d8"/></g><g transform="translate(24 -66) rotate(14)">
+      <ellipse rx="12" ry="38" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <ellipse cy="4" rx="6" ry="26" fill="#ffc6d8"/></g>
+      <ellipse cy="56" rx="40" ry="28" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <ellipse cx="-22" cy="80" rx="16" ry="8" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <ellipse cx="22" cy="80" rx="16" ry="8" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <circle r="52" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <circle cx="-32" cy="14" r="10" fill="#ffd3df"/><circle cx="32" cy="14" r="10" fill="#ffd3df"/>
+      <path d="M -31 -2 Q -20 -14 -9 -2" fill="none" stroke="#5a4a52" stroke-width="4" stroke-linecap="round"/>
+                   <path d="M 9 -2 Q 20 -14 31 -2" fill="none" stroke="#5a4a52" stroke-width="4" stroke-linecap="round"/><path d="M -4 13 L 4 13 L 0 18 Z" fill="#f08ab0"/><path d="M -12 20 Q 0 36 12 20 Z" fill="#e8607f" stroke="#5a4a52" stroke-width="2.5" stroke-linejoin="round"/><path d="M -6 20 Q 0 26 6 20" fill="#fff"/>
+      <g transform="translate(38 -44) rotate(20)">
+        <path d="M 0 0 L -16 -11 L -16 11 Z M 0 0 L 16 -11 L 16 11 Z" fill="#ff7fa8" stroke="#5a4a52" stroke-width="2.5" stroke-linejoin="round"/>
+        <circle r="4.5" fill="#ffb3c9" stroke="#5a4a52" stroke-width="2.5"/></g>
+      <text x="-70" y="-40" font-size="22" fill="#ffb347">✦</text><text x="46" y="-56" font-size="18" fill="#ffb347">✦</text></g><g transform="translate(620 150) scale(0.85)">
+      <g transform="translate(-24 -66) rotate(-24)">
+      <ellipse rx="12" ry="38" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <ellipse cy="4" rx="6" ry="26" fill="#ffc6d8"/></g><g transform="translate(24 -66) rotate(24)">
+      <ellipse rx="12" ry="38" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <ellipse cy="4" rx="6" ry="26" fill="#ffc6d8"/></g>
+      <ellipse cy="56" rx="40" ry="28" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <ellipse cx="-22" cy="80" rx="16" ry="8" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <ellipse cx="22" cy="80" rx="16" ry="8" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <circle r="52" fill="#fff8fb" stroke="#5a4a52" stroke-width="3"/>
+      <circle cx="-32" cy="14" r="8" fill="#ffd3df"/><circle cx="32" cy="14" r="8" fill="#ffd3df"/>
+      <path d="M -30 -20 Q -22 -24 -12 -18" fill="none" stroke="#5a4a52" stroke-width="3" stroke-linecap="round"/>
+                   <path d="M 12 -18 Q 22 -24 30 -20" fill="none" stroke="#5a4a52" stroke-width="3" stroke-linecap="round"/><circle cx="-20" cy="-2" r="11" fill="#fff" stroke="#5a4a52" stroke-width="2.5"/>
+                   <circle cx="-20" cy="1" r="7.5" fill="#5a4a52"/>
+                   <circle cx="-22.5" cy="-2" r="2.8" fill="#fff"/>
+                   <circle cx="-17.5" cy="3" r="1.3" fill="#fff"/><circle cx="20" cy="-2" r="11" fill="#fff" stroke="#5a4a52" stroke-width="2.5"/>
+                   <circle cx="20" cy="1" r="7.5" fill="#5a4a52"/>
+                   <circle cx="17.5" cy="-2" r="2.8" fill="#fff"/>
+                   <circle cx="22.5" cy="3" r="1.3" fill="#fff"/><path d="M -4 13 L 4 13 L 0 18 Z" fill="#f08ab0"/><path d="M -7 26 Q 0 21 7 26" fill="none" stroke="#5a4a52" stroke-width="2.5" stroke-linecap="round"/>
+      <g transform="translate(38 -44) rotate(20)">
+        <path d="M 0 0 L -16 -11 L -16 11 Z M 0 0 L 16 -11 L 16 11 Z" fill="#ff7fa8" stroke="#5a4a52" stroke-width="2.5" stroke-linejoin="round"/>
+        <circle r="4.5" fill="#ffb3c9" stroke="#5a4a52" stroke-width="2.5"/></g>
+      </g><text x="110" y="265" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#77748a">neutral</text><text x="280" y="265" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#77748a">waiting / thinking</text><text x="450" y="265" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#77748a">happy</text><text x="620" y="265" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#77748a">not yet</text><g id="teacher" transform="translate(860 150)" style="--fur:#d9d2cc;--inner:#f3c9c0;--line:#4a4440">
+    <use href="#ear" transform="translate(-26 -80) rotate(-8)"/>
+    <use href="#ear" transform="translate(26 -80) rotate(8)"/>
+    <!-- body with vest -->
+    <ellipse cx="0" cy="62" rx="48" ry="36" fill="#6f8fb8" stroke="var(--line)" stroke-width="3"/>
+    <path d="M -14 30 L 0 62 L 14 30" fill="#fff" stroke="var(--line)" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- bow tie -->
+    <path d="M 0 36 L -12 29 L -12 43 Z M 0 36 L 12 29 L 12 43 Z" fill="#d94f4f" stroke="var(--line)" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- feet -->
+    <ellipse cx="-26" cy="94" rx="18" ry="9" fill="var(--fur)" stroke="var(--line)" stroke-width="3"/>
+    <ellipse cx="26" cy="94" rx="18" ry="9" fill="var(--fur)" stroke="var(--line)" stroke-width="3"/>
+    <!-- head -->
+    <circle cx="0" cy="0" r="54" fill="var(--fur)" stroke="var(--line)" stroke-width="3"/>
+    <!-- eyebrows -->
+    <path d="M -30 -24 Q -20 -30 -10 -25" fill="none" stroke="var(--line)" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M 10 -25 Q 20 -30 30 -24" fill="none" stroke="var(--line)" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- glasses -->
+    <circle cx="-20" cy="-6" r="14" fill="#eaf4ff" fill-opacity="0.6" stroke="var(--line)" stroke-width="3"/>
+    <circle cx="20" cy="-6" r="14" fill="#eaf4ff" fill-opacity="0.6" stroke="var(--line)" stroke-width="3"/>
+    <path d="M -6 -6 L 6 -6 M -34 -8 L -50 -14 M 34 -8 L 50 -14" fill="none" stroke="var(--line)" stroke-width="3" stroke-linecap="round"/>
+    <!-- eyes -->
+    <circle cx="-20" cy="-5" r="5.5" fill="var(--line)"/>
+    <circle cx="20" cy="-5" r="5.5" fill="var(--line)"/>
+    <circle cx="-18" cy="-7" r="1.8" fill="#fff"/>
+    <circle cx="22" cy="-7" r="1.8" fill="#fff"/>
+    <!-- nose -->
+    <path d="M -5 13 L 5 13 L 0 19 Z" fill="#c98a80"/>
+    <!-- mustache -->
+    <path d="M 0 22 Q -10 14 -24 22 Q -16 30 0 24 Q 16 30 24 22 Q 10 14 0 22 Z" fill="#8a7f78" stroke="var(--line)" stroke-width="2"/>
+    <!-- mouth -->
+    <path d="M -8 32 Q 0 37 8 32" fill="none" stroke="var(--line)" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- whiskers -->
+    <path d="M -30 10 L -56 6 M -30 16 L -56 20 M 30 10 L 56 6 M 30 16 L 56 20" fill="none" stroke="var(--line)" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+
+<text x="860" y="265" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#77748a">teacher, for size</text></svg>

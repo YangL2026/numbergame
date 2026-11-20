@@ -9,7 +9,10 @@
 | 3 | Build Prototype A (track, three item types, placement run) | Claude | Done |
 | 4 | Turn on GitHub Pages and open the game on the laptop | You | Done: https://yangl2026.github.io/numbergame/ |
 | 5 | Try Prototype A yourself and report problems | You | Done |
-| 6 | Three sessions with her, watched without helping; notes in `NOTES.md` | You | Paused after session 1; design changes needed first |
+| 6 | Three sessions with her, watched without helping; notes in `NOTES.md` | You | Paused after session 1 |
+| 6a | Revise the design after session 1 (spec 0.7) | Both | Done |
+| 6b | Build Prototype A2 (equation strip, bunny and teacher, kinder scheduling) | Claude | Next |
+| 6c | Try Prototype A2 yourself, then her three sessions | You | Not started |
 | 7 | Review the notes and placement result; update the spec | Both | Not started |
 | 8 | Build Prototype B (stickers, sticker book, progress rules) | Claude | Not started |
 | 9 | Build Version 1 (How many more type, parent page) | Claude | Not started |
@@ -42,3 +45,4 @@
 - Changes made (spec 0.6): the token card shows ones = token = numeral and waits for ✓; tokens carry their numeral under them; the marker jumps from 0 to 5 for the flower as it does to 10 for the crown. Re-tested; no errors.
 - Step 5 done: third adult playthrough, the flower card is clear. Prototype A is ready for her.
 - Step 6, session 1 played. Two problems found: the five-token stage was not understood, and the prototype did not feel like a game. Details are in the private notes. Further sessions are on hold until the design is revised.
+- Step 6a: worked out the revision. Yang's diagnosis: the flower stage changed too much at once and nothing linked the first term to the marker. Yang's ideas adopted: the equation strip from S1 with the answer flying into its box, and a story (student bunny, teacher rabbit who grades). Claude's additions: the bunny is the marker and makes a visible opening jump to the first number; hands replace the flower and crown; a new skill only at a session start; keep-succeeding rule; 8 items. Characters drawn in SVG and approved. Spec 0.7 written.

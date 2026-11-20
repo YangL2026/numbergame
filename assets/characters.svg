@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 240" width="880" height="480">
+  <defs>
+    <!-- Shared face parts -->
+    <g id="ear">
+      <ellipse cx="0" cy="0" rx="14" ry="44" fill="var(--fur)" stroke="var(--line)" stroke-width="3"/>
+      <ellipse cx="0" cy="4" rx="7" ry="30" fill="var(--inner)"/>
+    </g>
+  </defs>
+
+  <!-- ===== Student bunny: "Pip" ===== -->
+  <g id="pip" transform="translate(110 125)" style="--fur:#fff7fa;--inner:#ffc2d6;--line:#5a4a52">
+    <!-- ears -->
+    <use href="#ear" transform="translate(-28 -78) rotate(-14)"/>
+    <use href="#ear" transform="translate(28 -78) rotate(14)"/>
+    <!-- body -->
+    <ellipse cx="0" cy="62" rx="46" ry="34" fill="var(--fur)" stroke="var(--line)" stroke-width="3"/>
+    <!-- feet -->
+    <ellipse cx="-26" cy="92" rx="18" ry="9" fill="var(--fur)" stroke="var(--line)" stroke-width="3"/>
+    <ellipse cx="26" cy="92" rx="18" ry="9" fill="var(--fur)" stroke="var(--line)" stroke-width="3"/>
+    <!-- head -->
+    <circle cx="0" cy="0" r="54" fill="var(--fur)" stroke="var(--line)" stroke-width="3"/>
+    <!-- cheeks -->
+    <circle cx="-30" cy="14" r="9" fill="#ffd0dd"/>
+    <circle cx="30" cy="14" r="9" fill="#ffd0dd"/>
+    <!-- eyes -->
+    <g id="pip-eyes">
+      <circle cx="-19" cy="-4" r="7" fill="var(--line)"/>
+      <circle cx="19" cy="-4" r="7" fill="var(--line)"/>
+      <circle cx="-16.5" cy="-6.5" r="2.4" fill="#fff"/>
+      <circle cx="21.5" cy="-6.5" r="2.4" fill="#fff"/>
+    </g>
+    <!-- nose and mouth -->
+    <path d="M -5 12 L 5 12 L 0 18 Z" fill="#f08ab0"/>
+    <path d="M 0 18 Q 0 26 -8 26 M 0 18 Q 0 26 8 26" fill="none" stroke="var(--line)" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- bow -->
+    <g transform="translate(40 -48) rotate(20)">
+      <path d="M 0 0 L -18 -12 L -18 12 Z" fill="#ff7fa8" stroke="var(--line)" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M 0 0 L 18 -12 L 18 12 Z" fill="#ff7fa8" stroke="var(--line)" stroke-width="2.5" stroke-linejoin="round"/>
+      <circle cx="0" cy="0" r="5" fill="#ffb3c9" stroke="var(--line)" stroke-width="2.5"/>
+    </g>
+  </g>
+
+  <!-- ===== Teacher rabbit: "Mr. Whiskers" ===== -->
+  <g id="teacher" transform="translate(320 125)" style="--fur:#d9d2cc;--inner:#f3c9c0;--line:#4a4440">
+    <use href="#ear" transform="translate(-26 -80) rotate(-8)"/>
+    <use href="#ear" transform="translate(26 -80) rotate(8)"/>
+    <!-- body with vest -->
+    <ellipse cx="0" cy="62" rx="48" ry="36" fill="#6f8fb8" stroke="var(--line)" stroke-width="3"/>
+    <path d="M -14 30 L 0 62 L 14 30" fill="#fff" stroke="var(--line)" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- bow tie -->
+    <path d="M 0 36 L -12 29 L -12 43 Z M 0 36 L 12 29 L 12 43 Z" fill="#d94f4f" stroke="var(--line)" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- feet -->
+    <ellipse cx="-26" cy="94" rx="18" ry="9" fill="var(--fur)" stroke="var(--line)" stroke-width="3"/>
+    <ellipse cx="26" cy="94" rx="18" ry="9" fill="var(--fur)" stroke="var(--line)" stroke-width="3"/>
+    <!-- head -->
+    <circle cx="0" cy="0" r="54" fill="var(--fur)" stroke="var(--line)" stroke-width="3"/>
+    <!-- eyebrows -->
+    <path d="M -30 -24 Q -20 -30 -10 -25" fill="none" stroke="var(--line)" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M 10 -25 Q 20 -30 30 -24" fill="none" stroke="var(--line)" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- glasses -->
+    <circle cx="-20" cy="-6" r="14" fill="#eaf4ff" fill-opacity="0.6" stroke="var(--line)" stroke-width="3"/>
+    <circle cx="20" cy="-6" r="14" fill="#eaf4ff" fill-opacity="0.6" stroke="var(--line)" stroke-width="3"/>
+    <path d="M -6 -6 L 6 -6 M -34 -8 L -50 -14 M 34 -8 L 50 -14" fill="none" stroke="var(--line)" stroke-width="3" stroke-linecap="round"/>
+    <!-- eyes -->
+    <circle cx="-20" cy="-5" r="5.5" fill="var(--line)"/>
+    <circle cx="20" cy="-5" r="5.5" fill="var(--line)"/>
+    <circle cx="-18" cy="-7" r="1.8" fill="#fff"/>
+    <circle cx="22" cy="-7" r="1.8" fill="#fff"/>
+    <!-- nose -->
+    <path d="M -5 13 L 5 13 L 0 19 Z" fill="#c98a80"/>
+    <!-- mustache -->
+    <path d="M 0 22 Q -10 14 -24 22 Q -16 30 0 24 Q 16 30 24 22 Q 10 14 0 22 Z" fill="#8a7f78" stroke="var(--line)" stroke-width="2"/>
+    <!-- mouth -->
+    <path d="M -8 32 Q 0 37 8 32" fill="none" stroke="var(--line)" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- whiskers -->
+    <path d="M -30 10 L -56 6 M -30 16 L -56 20 M 30 10 L 56 6 M 30 16 L 56 20" fill="none" stroke="var(--line)" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+</svg>

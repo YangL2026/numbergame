@@ -1,12 +1,12 @@
 # Number game: specification
 
-Version 0.6, 2026-11-19. Prototype A is built. Every number here is a starting value to tune after watching her play.
+Version 0.7, 2026-11-20. Prototype A is built; this version revises it after her first session. Every number here is a starting value to tune after watching her play.
 
 ## 1. Goal
 
 She chooses to play, and while she plays she is doing the thinking herself.
 
-The game teaches three things that come before addition facts:
+The game teaches four things that come before addition facts:
 
 1. Seeing a small quantity without counting it.
 2. Starting a count from a number she already has, not from 1.
@@ -22,8 +22,11 @@ These come from what has and hasn't worked for her. A change that breaks one of 
 | Rule | Why |
 |---|---|
 | Nothing countable stays on screen unless it is a solid token | She counts every cell of a ten-frame; she could not count inside the "pepperoni is 10" |
-| The math screen is plain; theme lives in stickers and tokens | iReady's story and monsters became the point |
+| Nothing on screen is disconnected from the math; the characters only react to answers | iReady's monsters did things unrelated to the problem, and the problem became the toll she paid to see them |
+| The structure of a problem appears while its content is easy; a stage changes one thing at a time | The flower stage changed three things at once and lost her |
 | A miss starts a walkthrough that she performs | The "boing" number-line jumps are what has worked at home |
+| A miss belongs to the bunny, not to her; the teacher never shows a cross | She left session one saying she didn't understand |
+| She keeps succeeding about four times in five | Session one ended in a run of misses on the stage she had just failed |
 | No clocks, scores, or speed rewards are ever shown | No pressure for now |
 | The number line is something she moves along, never something she draws | Drawing it turns into a drawing project |
 | Sessions are short and end while she wants more | Keeps her coming back |
@@ -42,13 +45,14 @@ These come from what has and hasn't worked for her. A change that breaks one of 
 ```
 numbergame/
   SPEC.md              this file; change it first, then the code
+  PROGRESS.md          step list and dated log
   index.html           child screen: start, play, sticker book
   parent.html          progress, settings, export
   manifest.webmanifest lets a phone or tablet add the game to its home screen
   config/
-    skills.json        skill ladder and mastery rule
-    settings.json      defaults for everything in section 12
-    themes.json        token sets and sticker list
+    skills.json        skill ladder, placement and mastery rules
+    settings.json      defaults for everything in section 13
+    themes.json        sticker sets and later token sets
   engine/
     session.js         runs one session
     scheduler.js       picks the next item
@@ -56,42 +60,95 @@ numbergame/
     audio.js           sound effects and the speaker button
     reward.js          sticker award and sticker book
   games/
-    track.js           the number track and marker (shared)
+    track.js           the number track and the bunny on it (shared)
+    equation.js        the equation strip (shared)
+    characters.js      draws the bunny and the teacher with their faces
     flash.js           item type 1
     cup.js             item type 2
     ten.js             item type 3
     more.js            item type 4
-  assets/              empty in version 1
+  assets/
+    characters.svg     teacher drawing
+    bunny-sheet.svg    the bunny's four faces, for reference
+  tests/
+    play.py            plays the game with a simulated child
 ```
 
 - The engine decides what comes next. Files in `games/` only draw an item and report the answer.
 - Changing the ladder, ranges, or session length means editing `config/`, not code.
-- Sounds are generated in the browser, and tokens and stickers are emoji, so version 1 needs no asset files.
+- Sounds are generated in the browser. The characters are drawn in SVG, so no image files are needed.
 
-## 4. Screen
+## 4. Characters
 
-- **Top:** the question ("How many?" or "How many hops?") with a small speaker button that reads it aloud.
-- **Middle:** the picture for the item.
-- **Bottom:** the number track with a marker.
-- No score, timer, progress percentage, or character. A row of 12 small circles fills in as items are finished, so she can see the session is short.
+Two rabbits, both drawn in code (`games/characters.js`), in the style of `assets/`.
+
+- **The student:** a small white bunny with big eyes, pink cheeks, and a bow. She is the one answering, with the child's help. She is also the marker: she stands on the number track and hops along it.
+- **The teacher:** a larger grey rabbit with round glasses, a mustache, a blue vest, and a bow tie. He asks the question and checks the answer.
+
+**Faces.** The bunny has four: neutral, thinking (eyes up, small "o" mouth, a faint question mark), happy (eyes closed, open smile, two sparkles), and not-yet (ears drooped, eyes down, small frown). The teacher has three: neutral, pleased (smile), and not-yet (one eyebrow raised; never stern).
+
+**What they do, and only this:**
+
+| Moment | Bunny | Teacher |
+|---|---|---|
+| Item appears | neutral, hops from 0 to the first number | asks "How many?" in a speech bubble |
+| Dots flash, child moves the bunny | thinking | neutral |
+| Child confirms, answer is right | happy, little bounce | pleased, green tick on the answer, bubble says "Yes!" |
+| Child confirms, answer is wrong | not-yet | not-yet face, bubble says "Not yet", no cross, no sound |
+| Walkthrough | thinking while hopping, happy at the end | pleased, tick on the corrected answer |
+| Session ends | happy | hands over the sticker |
+
+**Rules.** The characters never act on their own: no idle animation, no jokes between items, no reaction that is not to an answer. The only "funny thing" in the game is the bunny being pleased when the answer is right.
+
+**Names.** At first launch the child picks the bunny's name from a short list on screen (no typing). The teacher's name is fixed in `config/settings.json`; the parent says it aloud so the child can use it.
+
+## 5. Screen
+
+- **Top left:** the teacher with his speech bubble. The bubble holds the question ("How many?") and, after an answer, "Yes!" or "Not yet". A small speaker button beside it reads the bubble aloud.
+- **Top right:** a row of 8 small circles that fill in as items finish, so she can see the session is short.
+- **Middle:** the equation strip (section 6).
+- **Bottom:** the number track, with the bunny standing on one cell.
+- No score, timer, or percentage.
 
 ### Number track
 
 - Runs 0–10 for skills S1–S3 and 0–20 from S4 on.
 - All cells share one neutral color, with every numeral shown. Every fifth cell (0, 5, 10, 15, 20) is slightly darker as a quiet landmark.
-- The marker is a large dot sitting on one cell.
+- The bunny stands on one cell. The cell under her is outlined.
 
-## 5. Input
+## 6. The equation strip
+
+Every item is shown as the same three-part strip, the shape of a school worksheet line:
+
+```
+[ first part ]  +  [ dots box ]  =  [ answer ]
+```
+
+- **First part:** what she starts with. A plain "0" in S1, a hand (✋ with "5" under it) in S2, a cup with its number in S3 and S4, two hands (✋✋ with "10") in S5, and so on. This part is also where the bunny's first jump lands.
+- **Dots box:** the loose ones. In Flash and Ten-token items the dots flash and fade; in Cup items they stay.
+- **Answer:** an empty box with a faint "?". When she confirms, the numeral under the bunny flies up into it. A right answer gets a green tick beside the box. A wrong answer wobbles, fades, and is replaced by the right one at the end of the walkthrough.
+
+The strip appears in S1, while the content is trivial, so that later stages change only what is in the first box.
+
+### How an item runs
+
+1. The strip appears with the first part and an empty dots box. The bunny stands on 0.
+2. The bunny makes one visible jump from 0 to the first number, with a "boing", while the first box highlights. (On S1 this is a jump from 0 to 0: a small bounce in place.)
+3. The dots appear in the box, then flash and fade (or stay, for Cup items). The bunny's face turns to thinking.
+4. She moves the bunny and confirms.
+5. The number flies into the answer box and the teacher reacts (section 4).
+
+## 7. Input
 
 | Action | Keys | Trackpad |
 |---|---|---|
-| Move the marker one cell | Left and right arrows | Click a cell (the whole column above it counts), or the on-screen ◀ ▶ buttons |
-| Confirm the answer | Spacebar or Enter | The on-screen ✓ button, or click the marker's cell again |
+| Move the bunny one cell | Left and right arrows | Click a cell (the whole column above it counts), or the on-screen ◀ ▶ buttons |
+| Confirm the answer | Spacebar or Enter | The on-screen ✓ button, or click the bunny's cell again |
 | Start, continue | Spacebar | Click the button |
 
 - Both inputs always work. There is no setting.
 - Each arrow press is one hop with a short "boing". Holding a key does not repeat.
-- The marker starts on the value of the part she is given: 0 if nothing is given, 5 for a five-token, 10 for a ten-token, the cup's number for a cup.
+- After the opening jump, the bunny stands on the first number; from there every hop is counting on.
 
 ### Touch and small screens
 
@@ -109,56 +166,54 @@ Required before the link is shared. These are known pitfalls of web pages on pho
 | Sound starts only after the first tap on "Play" | Phone browsers block sound before a touch |
 | Each release is tried on a real phone and a real tablet | Desktop emulation misses these behaviors |
 
-## 6. Item types
+## 8. Item types
 
-Each skill begins, the first time only, with two or three warm-up rounds that she plays herself: the dots stay on screen, faded, and each hop turns one solid, then she confirms. After the warm-ups a "Your turn" card appears, and from then on the dots flash and hide. The warm-ups for a skill are listed in `config/skills.json`, and they do not count as session items. A plus sign sits between the given part and the loose ones.
+Each skill begins, the first time only, with two or three warm-up rounds that she plays herself: the dots stay on screen, faded, and each hop turns one solid, then she confirms. After the warm-ups a "Your turn" card appears, and from then on the dots flash and hide. The warm-ups for a skill are listed in `config/skills.json`, and they do not count as session items.
 
-### 6.1 Flash
+### 8.1 Flash
 
-- **Shows:** loose dots for 1.5 seconds, then fades them out over 0.6 seconds. The empty box pulses just before the dots appear. From S2 on, a five-token stays visible and only the loose dots are hidden.
+- **Shows:** loose dots in the dots box for 1.5 seconds, then fades them out over 0.6 seconds. The box pulses just before the dots appear. The first part is "0" (S1) or a hand (S2).
 - **Asks:** how many in all.
-- **After a miss:** the dots return and stay. The marker goes back to its start, and each hop lights one dot, as in the Cup walkthrough.
+- **After a miss:** the dots return, faded. The bunny goes back to the first number, and each hop lights one dot.
 
-### 6.2 Cup
+### 8.2 Cup
 
-- **Shows:** a cup with a numeral on it, and 1–3 loose dots beside it. The loose dots stay visible.
+- **Shows:** a cup with a numeral on it as the first part, and 1–3 loose dots that stay visible.
 - **Asks:** how many in all.
-- **Marker starts:** on the cup's number.
-- **After a miss:** the marker returns to the cup's number. Each right-arrow press makes one hop and lights up one loose dot. When the dots are used up, the marker stops, the numeral grows, and she confirms.
+- **After a miss:** the bunny returns to the cup's number. Each right-arrow press makes one hop and lights up one loose dot. When the dots are used up, the bunny stops, the number flies into the answer box, and she confirms.
 
-### 6.3 Ten-token
+### 8.3 Ten-token
 
-- **Shows:** one ten-token and 1–9 loose ones, flashed like the Flash type. The token stays visible.
+- **Shows:** two hands (10) as the first part and 1–9 loose ones, flashed like the Flash type.
 - **Asks:** how many in all.
-- **Marker starts:** on 10.
-- **After a miss:** the marker makes one big jump from 0 to 10 by itself, then she hops the ones as in the Cup walkthrough.
+- **After a miss:** the bunny jumps from 0 to 10, then she hops the ones as in the Cup walkthrough.
 - **Order:** the number of ones is random each time, never one more than the last item.
 
-### 6.4 How many more
+### 8.4 How many more
 
-- **Shows:** the marker on a start number and a flag on a later number, both on the track. Above the track sits a small counter row numbered 0–10.
+- **Shows:** the bunny on a start number and a flag on a later number, both on the track. The strip reads `[start] + [ ? ] = [flag]`, with the empty middle box as the thing to find. A small counter row numbered 0–10 sits above the track.
 - **Asks:** "How many hops?" She sets the counter with the arrows and confirms.
-- **Then:** the marker makes that many hops. If it lands on the flag, the item is correct.
-- **After a miss:** the marker returns to the start. She hops it to the flag herself, and each hop fills one cell of the counter. When it reaches the flag, the counter's numeral grows and she confirms.
+- **Then:** the bunny makes that many hops. If she lands on the flag, the item is correct.
+- **After a miss:** the bunny returns to the start. The child hops her to the flag, and each hop fills one cell of the counter. On reaching the flag the count flies into the middle box.
 
-### 6.5 Rules shared by all types
+### 8.5 Rules shared by all types
 
 - A miss makes no error sound and shows no cross.
 - The walkthrough cannot be skipped and ends on the right answer.
 - A missed item comes back once, at least three items later in the same session.
 - Only the first attempt is recorded as correct or not.
 
-## 7. Skill ladder
+## 9. Skill ladder
 
-| Skill | Type | Content | Track |
-|---|---|---|---|
-| S1 | Flash | 1–5 dots in dice-like patterns | 0–10 |
-| S2 | Flash | five-token plus 1–5 dots (6–10) | 0–10 |
-| S3 | Cup | cup 3–8 plus 1–2 dots, total at most 10 | 0–10 |
-| S4 | Cup | cup 5–9 plus 1–3 dots, total at most 12 | 0–20 |
-| S5 | Ten-token | ten plus 1–9 | 0–20 |
-| S6 | Cup | cup 11–17 plus 1–3 dots | 0–20 |
-| S7 | How many more | start 3–9, flag 1–6 further on | 0–20 |
+| Skill | Type | First part | Content | Track |
+|---|---|---|---|---|
+| S1 | Flash | 0 | 1–5 dots in dice-like patterns | 0–10 |
+| S2 | Flash | ✋ 5 | plus 1–5 dots (6–10) | 0–10 |
+| S3 | Cup | cup 3–8 | plus 1–2 dots, total at most 10 | 0–10 |
+| S4 | Cup | cup 5–9 | plus 1–3 dots, total at most 12 | 0–20 |
+| S5 | Ten-token | ✋✋ 10 | plus 1–9 | 0–20 |
+| S6 | Cup | cup 11–17 | plus 1–3 dots | 0–20 |
+| S7 | How many more | start 3–9 | flag 1–6 further on | 0–20 |
 
 Each skill is one entry in `config/skills.json`:
 
@@ -171,7 +226,7 @@ Stages planned beyond S7, entered in the config with `"enabled": false` until bu
 | Skill | Type | Content |
 |---|---|---|
 | S8 | How many more | flag fixed at 10 (pairs that make 10) |
-| S9 | Ten-token | up arrow as a jump of ten; two tens plus ones |
+| S9 | Ten-token | up arrow as a jump of ten; two tens plus ones; themed tokens replace hands |
 | S10 | Cup | 9 + n and 8 + n, crossing ten |
 | S11 | New type | doubles and near-doubles |
 | S12 | New type | a 0–100 track |
@@ -179,42 +234,42 @@ Stages planned beyond S7, entered in the config with `"enabled": false` until bu
 ### Placement
 
 - Her first sessions are a placement run that looks like normal play.
-- Each skill, in ladder order, gets 6 probe items. With 5 or more correct on the first try, the skill is marked passed and the run moves up.
+- A session probes one skill: its warm-ups, then 6 probe items, with the remaining items drawn from skills already passed. With 5 or more probes correct on the first try, the skill is passed and the next session probes the next skill.
 - The first skill she does not pass becomes her current skill.
 - Skills passed by placement stay in the review mix, and the falling-back rule still applies to them.
 
 ### Progress
 
-- **Session mix:** about 70% items from the current skill, 30% from skills already passed.
+- **A new skill starts only at the start of a session**, with its warm-ups. It never appears partway through one.
+- **Session mix:** about half the items from the current skill, half from skills already passed.
+- **Keeping her succeeding:** if she misses 2 of the last 4 current-skill items, the rest of that session comes from passed skills, except for one more current-skill item near the end. The aim is at least 4 right in 5 across a session.
 - **Passing a skill:** at least 85% first-try correct over the last 20 items of that skill, reached on two different days.
 - **Falling back:** below 50% over 10 items returns her to the previous skill for the next session.
 - Response times play no part in passing. They are recorded for the parent page only.
 
-## 8. Session
+## 10. Session
 
-1. Start screen: one large "Play" button and a "Sticker book" button.
-2. 12 items, about 3–4 minutes.
-3. End: she picks one sticker from three, and it drops into the book with a chime.
+1. Start screen: the bunny and the teacher, one large "Play" button, and a "Sticker book" button.
+2. 8 items, about 2–3 minutes.
+3. End: the teacher holds out three stickers; she picks one, and it drops into the book with a chime.
 4. After 2 sessions in a day, the start screen shows only the sticker book and "See you tomorrow".
 
-## 9. Stickers and tokens
+## 11. Stickers and tokens
 
 - **Stickers:** one per finished session, whatever the accuracy. Emoji in her taste, for example 👑 🦄 🧁 🫧 💎 🌸 🦋 🌈 🎀 ⭐.
 - **Sticker book:** a grid showing every sticker earned, in order. No arranging in version 1.
-- **Tokens:** each child picks one set at first launch. Each set has a one, a five, and a ten, for example 🫧 / 🌸 / 👑. The set changes only from the parent page.
-- **Themes:** `config/themes.json` holds several token and sticker sets (for example princess, animals, space, vehicles), so other children have something that suits them.
-- **Meaning of a token:** the first time a five or ten appears, a card shows that many ones, an equals sign, the token, and its numeral (●●●●● = 🌸 = 5). The card stays until she presses ✓.
-- **Token label:** a token always has its numeral beneath it, the way the cup carries its number.
-- **Token jump:** in warm-ups and walkthroughs, the marker makes one big jump from 0 to the token's number before the hops begin.
+- **Hands for five and ten:** through S8 the five is a hand and the ten is two hands, drawn in the characters' style, each with its numeral beneath. A hand needs no explanation; she already knows 5 + 5 = 10 on her fingers.
+- **Themed tokens:** from S9 on, a child's chosen token set (for example 🌸 for 5 and 👑 for 10) can replace the hands, introduced the same way: the strip shows the token with its numeral, and the bunny's opening jump shows what it is worth. No equivalence card.
+- **Themes:** `config/themes.json` holds several sticker sets and token sets (for example princess, animals, space, vehicles), so other children have something that suits them.
 
-## 10. Sound and words
+## 12. Sound and words
 
-- **Sounds:** "boing" on each hop, a soft tone on landing, a chime on a sticker. One switch turns them all off.
-- **Words on screen:** "How many?", "How many hops?", "Your turn", "Play", "Sticker book", "See you tomorrow".
-- **Speech:** only the speaker button. The math itself is silent.
+- **Sounds:** "boing" on each hop, a bigger "boing" for the opening jump, a soft two-note tone on a tick, a chime on a sticker. One switch turns them all off. A wrong answer makes no sound.
+- **Words on screen:** "How many?", "How many hops?", "Yes!", "Not yet", "Your turn", "Play", "Sticker book", "See you tomorrow", and the names.
+- **Speech:** only the speaker button, which reads the teacher's bubble. The math itself is silent.
 - **Number names:** off. See open question 1.
 
-## 11. Data
+## 13. Data
 
 Everything is stored in the browser's local storage on that laptop. Clearing browser data erases it, so the parent page has an export button.
 
@@ -235,12 +290,12 @@ One record per attempt:
 }
 ```
 
-Also stored: current skill, per-skill history, stickers earned, token set, settings.
+Also stored: current skill, per-skill history, stickers earned, bunny's name, token set, settings.
 
 ### Profiles
 
 - The start screen asks "Who is playing?" when a device has more than one profile. A profile is a first name or nickname plus a sticker as its picture.
-- Each profile has its own progress, stickers, and token set. Profiles exist only on that device.
+- Each profile has its own progress, stickers, bunny name, and token set. Profiles exist only on that device.
 
 ### Keeping progress safe
 
@@ -249,15 +304,15 @@ Also stored: current skill, per-skill history, stickers earned, token set, setti
 - **What the game does about it:** the manifest makes "Add to Home Screen" work, and the parent page explains it in one line and offers export.
 - **No collection:** nothing leaves the device. There are no accounts, analytics, or cookies.
 
-## 12. Parent page
+## 14. Parent page
 
 **Settings (four):**
 
 | Setting | Default |
 |---|---|
-| Items per session | 12 |
+| Items per session | 8 |
 | Sounds | on |
-| Token set | her choice |
+| Token set | her choice (used from S9) |
 | Current skill | set by placement; can be overridden by hand |
 
 **Shows:**
@@ -268,45 +323,49 @@ Also stored: current skill, per-skill history, stickers earned, token set, setti
 - Sessions per day.
 - Buttons: export data, import data, reset, add or remove a profile.
 
-**Fixed in `config/settings.json`, not on the page:** flash duration (1500 ms) and fade (600 ms), sessions per day (2), session mix (70/30), mastery rule, placement rule (6 probes, 5 to pass), requeue distance (3 items).
+**Fixed in `config/settings.json`, not on the page:** flash duration (1500 ms) and fade (600 ms), sessions per day (2), session mix (50/50), the keep-succeeding rule (2 misses in 4), mastery rule, placement rule (6 probes, 5 to pass), requeue distance (3 items), the teacher's name.
 
-## 13. Build order and testing
+## 15. Build order and testing
 
-1. **Prototype A (built):** track, marker, both inputs, the Flash, Cup, and Ten-token types, and the placement run over S1–S6. No stickers, no token choice (the first theme is used). A bare parent page shows the placement result, with download and erase buttons.
-2. Watch three sessions without helping. Record:
+1. **Prototype A (built):** track, marker, both inputs, the Flash, Cup, and Ten-token types, and the placement run over S1–S6. Her first session showed the five-token stage was not understood and the game did not feel like a game.
+2. **Prototype A2 (next):** the equation strip, the bunny as marker with her faces, the teacher with his bubble, the opening jump, the answer flying into its box, hands for five and ten, name choice, 8-item sessions, and the kinder scheduling. No stickers yet.
+3. Three sessions with her, watched without helping. Record:
    - Does she ask to play again?
    - Arrows or trackpad, and is either one a struggle?
    - Does she count on the screen with a finger?
-   - Does she follow the walkthrough after a miss, or mash keys?
+   - After a miss, does she follow the faded dots, or press keys at random?
+   - Does the hand make sense without explanation?
    - Where does placement put her, and does that match what you see at home?
-3. **Prototype B:** add stickers, the sticker book, and progress rules.
-4. **Version 1:** the How many more type (S7) and the parent page.
-5. **Sharing release:** touch rules from section 5, profiles, extra themes, the manifest, and data versioning. Tried on a real phone and tablet before the link goes out.
+4. **Prototype B:** stickers and the sticker book.
+5. **Version 1:** the How many more type (S7) and the full parent page.
+6. **Sharing release:** touch rules from section 7, profiles, extra themes, the manifest, and data versioning. Tried on a real phone and tablet before the link goes out.
 
-Change one thing per version and note it in section 17.
+Change one thing per version and note it in section 19.
 
 ### Testing switches
 
 Added to the game's address: `?reset` erases saved data, `?nolimit` lifts the two-sessions-a-day limit, `?speed=4` shortens the pauses. `tests/play.py` plays the game with a simulated child.
 
-## 14. Later, not in version 1
+## 16. Later, not in version 1
 
-- Stages S8–S12 from section 7.
+- Stages S8–S12 from section 9.
 - A track with only 0, 5, 10, 15, 20 labeled.
 - Arranging stickers on a page.
 - Recorded parent voice in place of browser speech.
+- A second student character to choose from (kitten, unicorn).
 
-## 15. Open questions
+## 17. Open questions
 
 1. **Number names.** Should the game say "fifteen" once after a correct teen answer? It would link the word to the numeral, and it conflicts with keeping the math silent. Currently off.
-2. **Flash with arrows.** On S1 the marker starts at 0, so answering 4 takes four presses. If that turns into counting, start the marker elsewhere or favor clicking for this type.
-3. **Flash duration.** Raised from 1 second to 1.5 seconds plus a fade after the first adult try. Long enough to survive a blink, short enough that five dots are hard to count one by one. Adjust after watching her.
+2. **"0 +" in S1.** The equation strip starts with a plain 0 so that the shape is learned early. If the 0 itself confuses her, S1 can show the first box empty.
+3. **The bunny's face at track size.** She stands on a cell about 120 px tall, so her face is small. If the faces do not read at that size, a larger copy of her face can sit beside the equation strip.
+4. **Flash duration.** 1.5 seconds plus a fade. Long enough to survive a blink, short enough that five dots are hard to count one by one. Adjust after watching her.
 
-## 16. Observations at home
+## 18. Observations at home
 
 Dated notes on what a child does away from the game decide where the ladder goes next. They are kept in a private `NOTES.md` that is never committed to the public repository.
 
-## 17. Change log
+## 19. Change log
 
 - 0.1 (2026-11-15): first version.
 - 0.2 (2026-11-18): placement run replaces starting at S1; How many more type and S7 added; S8–S12 listed as disabled config entries; parent override of current skill; Prototype A covers three item types; observations section added.
@@ -314,3 +373,4 @@ Dated notes on what a child does away from the game decide where the ladder goes
 - 0.4 (2026-11-18): Prototype A built. On-screen ◀ ▶ ✓ buttons added; the Flash walkthrough now uses one hop per dot like the others; examples are set per skill; a bare parent page was brought forward; testing switches documented.
 - 0.5 (2026-11-18): after the first adult playthrough. Hands-on warm-ups and a "Your turn" card replace the self-playing "Watch" examples; the flash is longer and fades out; the track is one color with a landmark at every five.
 - 0.6 (2026-11-19): the token introduction no longer passes by itself; it shows ones = token = numeral and waits for ✓. Tokens carry their numeral. The big jump from 0 now applies to the five-token as well as the ten.
+- 0.7 (2026-11-20): after her first session. Every item is an equation strip from S1 on; the bunny is the marker and makes a visible opening jump to the first number; the answer flies into its box and the teacher ticks it; a student bunny and a teacher rabbit, with faces, replace the plain screen (design rule revised: nothing disconnected from the math); hands replace the flower and crown through S8, and the equivalence card is dropped; a new skill starts only at a session start; keep-succeeding rule; 8 items per session; placement probes one skill per session.
