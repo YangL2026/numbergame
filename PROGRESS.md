@@ -9,7 +9,7 @@
 | 3 | Build Prototype A (track, three item types, placement run) | Claude | Done |
 | 4 | Turn on GitHub Pages and open the game on the laptop | You | Done: https://yangl2026.github.io/numbergame/ |
 | 5 | Try Prototype A yourself and report problems | You | Done |
-| 6 | Three sessions with her, watched without helping; notes in `NOTES.md` | You | Next |
+| 6 | Three sessions with her, watched without helping; notes in `NOTES.md` | You | Paused after session 1; design changes needed first |
 | 7 | Review the notes and placement result; update the spec | Both | Not started |
 | 8 | Build Prototype B (stickers, sticker book, progress rules) | Claude | Not started |
 | 9 | Build Version 1 (How many more type, parent page) | Claude | Not started |
@@ -41,3 +41,4 @@
 - Step 5, second round: warm-ups, "Your turn", and the longer flash feel right. New feedback: the flower appeared and vanished before its meaning was clear.
 - Changes made (spec 0.6): the token card shows ones = token = numeral and waits for ✓; tokens carry their numeral under them; the marker jumps from 0 to 5 for the flower as it does to 10 for the crown. Re-tested; no errors.
 - Step 5 done: third adult playthrough, the flower card is clear. Prototype A is ready for her.
+- Step 6, session 1 played. Two problems found: the five-token stage was not understood, and the prototype did not feel like a game. Details are in the private notes. Further sessions are on hold until the design is revised.
