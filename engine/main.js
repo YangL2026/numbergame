@@ -1,8 +1,9 @@
-// Start screen and the hand-off into a session.
+// Start screen, name choice, and the hand-off into a session.
 import { loadConfig } from './config.js';
 import * as store from './store.js';
 import { Sound } from './audio.js';
 import { runSession } from './session.js';
+import { bunnySvg, teacherSvg } from '../games/characters.js';
 
 const root = document.getElementById('app');
 const params = new URLSearchParams(location.search);
@@ -24,10 +25,31 @@ function sessionsToday() {
   return profile.sessions.filter((s) => s.date === day).length;
 }
 
+// First launch: she picks the bunny's name from a short list.
+function showNames() {
+  const names = config.settings.bunnyNames;
+  root.innerHTML = `
+    <div class="screen">
+      <div class="char-holder big">${bunnySvg('neutral')}</div>
+      <p class="big">What is her name?</p>
+      <div class="names">${names.map((n) => `<button type="button" class="name-btn">${n}</button>`).join('')}</div>
+    </div>`;
+  root.querySelectorAll('.name-btn').forEach((b) => b.addEventListener('click', () => {
+    profile.name = b.textContent;
+    save();
+    showStart();
+  }));
+}
+
 function showStart(message) {
+  if (!profile.name) { showNames(); return; }
   const limited = !params.has('nolimit') && sessionsToday() >= config.settings.sessionsPerDay;
   root.innerHTML = `
     <div class="screen">
+      <div class="cast">
+        <div class="char-holder">${bunnySvg(message ? 'happy' : 'neutral')}<span class="cap">${profile.name}</span></div>
+        <div class="char-holder teacher-sm">${teacherSvg(message ? 'pleased' : 'neutral')}<span class="cap">${config.settings.teacherName}</span></div>
+      </div>
       ${message ? `<p class="big">${message}</p>` : ''}
       ${limited
         ? '<p class="big">See you tomorrow</p>'

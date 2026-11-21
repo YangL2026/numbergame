@@ -1,4 +1,6 @@
-// The number track and its marker, shared by every item type.
+// The number track, with the bunny standing on one cell.
+import { setFace } from './characters.js';
+
 export class Track {
   constructor(root, sound) {
     this.root = root;
@@ -7,9 +9,12 @@ export class Track {
     this.value = 0;
     this.cells = [];
     this.onCell = null; // set by the session: called with the cell number
-    this.marker = document.createElement('div');
-    this.marker.className = 'marker';
+    this.bunny = document.createElement('div');
+    this.bunny.className = 'marker';
+    setFace(this.bunny, 'bunny', 'neutral');
   }
+
+  face(f) { setFace(this.bunny, 'bunny', f); }
 
   build(max) {
     if (max === this.max) return;
@@ -33,17 +38,17 @@ export class Track {
     }
   }
 
-  set(n, { sound = false, big = false } = {}) {
+  set(n, { sound = false, anim = 'hop' } = {}) {
     n = Math.max(0, Math.min(this.max, n));
     this.value = n;
     this.cells.forEach((c) => c.classList.remove('here', 'landed'));
     const cell = this.cells[n];
     cell.classList.add('here');
-    this.marker.classList.remove('hop', 'big');
-    cell.querySelector('.slot').appendChild(this.marker);
-    void this.marker.offsetWidth; // restart the animation
-    this.marker.classList.add(big ? 'big' : 'hop');
-    if (sound) (big ? this.sound.bigJump() : this.sound.boing());
+    this.bunny.classList.remove('hop', 'bounce', 'wobble');
+    cell.querySelector('.slot').appendChild(this.bunny);
+    void this.bunny.offsetWidth; // restart the animation
+    if (anim) this.bunny.classList.add(anim);
+    if (sound) this.sound.boing();
   }
 
   // One hop left (-1) or right (+1). Returns false at either end.
@@ -54,8 +59,12 @@ export class Track {
     return true;
   }
 
-  // Makes the numeral under the marker grow.
-  land() {
-    this.cells[this.value].classList.add('landed');
-  }
+  bounce() { this.set(this.value, { anim: 'bounce' }); }
+  wobble() { this.set(this.value, { anim: 'wobble' }); }
+
+  // Makes the numeral under the bunny grow.
+  land() { this.cells[this.value].classList.add('landed'); }
+
+  // Screen position of the numeral under the bunny, for the flying number.
+  numRect() { return this.cells[this.value].querySelector('.num').getBoundingClientRect(); }
 }

@@ -1,16 +1,16 @@
-// Shared drawing helpers for the pictures in the middle of the screen.
-const el = (tag, cls) => {
+// Shared drawing helpers for the pictures in the equation strip.
+export const el = (tag, cls, text) => {
   const node = document.createElement(tag);
   if (cls) node.className = cls;
+  if (text !== undefined) node.textContent = text;
   return node;
 };
 
-// A one, five, or ten token from the chosen theme. "dot" draws a plain circle.
-export function token(kind, theme) {
-  const value = theme[kind];
-  const node = el('span', 'tok tok-' + kind);
-  if (value === 'dot') node.classList.add('dot');
-  else node.textContent = value;
+// A loose one: a plain dot, or the theme's emoji for later stages.
+export function one(theme) {
+  const node = el('span', 'tok tok-one');
+  if (!theme || theme.one === 'dot') node.classList.add('dot');
+  else node.textContent = theme.one;
   return node;
 }
 
@@ -26,7 +26,7 @@ export function looseGroup(n, theme) {
     for (let pos = 1; pos <= 9; pos++) {
       const cell = el('span', 'spot');
       if (DICE[n].includes(pos)) {
-        const dot = token('one', theme);
+        const dot = one(theme);
         cell.appendChild(dot);
         dots.push(dot);
       }
@@ -35,7 +35,7 @@ export function looseGroup(n, theme) {
   } else {
     group.classList.add('rows');
     for (let i = 0; i < n; i++) {
-      const dot = token('one', theme);
+      const dot = one(theme);
       group.appendChild(dot);
       dots.push(dot);
     }
@@ -43,40 +43,16 @@ export function looseGroup(n, theme) {
   return { el: group, dots };
 }
 
-// Puts the given part (token or cup) beside the loose ones.
-export function assemble(givenEl, loose, flashes, value) {
-  const picture = el('div', 'picture');
-  if (givenEl) {
-    const wrap = el('div', 'given');
-    wrap.appendChild(givenEl);
-    // A token always carries its number, the way the cup does.
-    if (value) wrap.appendChild(el('span', 'given-num')).textContent = String(value);
-    picture.appendChild(wrap);
-    picture.appendChild(el('span', 'plus')).textContent = '+';
+// The first part of the strip: what she starts with.
+export function firstPart(kind, value) {
+  const wrap = el('div', 'first first-' + kind);
+  if (kind === 'zero' || kind === 'num') {
+    wrap.appendChild(el('span', 'first-num', String(value)));
+  } else if (kind === 'hand' || kind === 'hands') {
+    wrap.appendChild(el('span', 'hand', kind === 'hand' ? '✋' : '✋✋'));
+    wrap.appendChild(el('span', 'first-label', String(value)));
+  } else if (kind === 'cup') {
+    wrap.appendChild(el('div', 'cup', String(value)));
   }
-  picture.appendChild(loose.el);
-  return {
-    el: picture,
-    loose: loose.dots,
-    flashes,
-    hideLoose() { loose.el.classList.remove('fading', 'ready'); loose.el.classList.add('hidden'); },
-    showLoose() { loose.el.classList.remove('hidden', 'fading', 'ready'); },
-    fadeLoose() { loose.el.classList.add('fading'); },
-    cue() { loose.el.classList.add('ready'); },
-  };
-}
-
-// Shown once: that many ones are the same as one token.
-export function tokenIntro(kind, theme) {
-  const count = kind === 'ten' ? 10 : 5;
-  const card = el('div', 'intro');
-  const ones = el('div', 'intro-ones loose rows');
-  for (let i = 0; i < count; i++) ones.appendChild(token('one', theme));
-  const sign = (text) => { const s = el('span', 'intro-sign'); s.textContent = text; return s; };
-  const big = token(kind, theme);
-  big.classList.add('intro-token');
-  const num = el('span', 'intro-num');
-  num.textContent = String(count);
-  card.append(ones, sign('='), big, sign('='), num);
-  return card;
+  return wrap;
 }

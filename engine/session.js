@@ -1,12 +1,12 @@
-// Runs one play session: present an item, take the answer, give feedback.
+// Runs one play session: the Start step, the Add step, feedback, walkthroughs.
 import { Track } from '../games/track.js';
 import { GAMES } from '../games/index.js';
-import { tokenIntro } from '../games/pieces.js';
+import { buildStrip } from '../games/equation.js';
+import { setFace } from '../games/characters.js';
 import { speak } from './audio.js';
-import { activeSkills, fixedItem, nextItem, recordProbe } from './scheduler.js';
+import { activeSkills, fixedItem, planSession, Picker, finishPlacement, updateProgress } from './scheduler.js';
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const QUESTION = 'How many?';
 
 export async function runSession({ root, config, profile, theme, sound, save, speed = 1 }) {
   const S = config.settings;
@@ -17,8 +17,9 @@ export async function runSession({ root, config, profile, theme, sound, save, sp
   root.innerHTML = `
     <div class="play">
       <header class="top">
-        <button type="button" class="speak" aria-label="Read the question aloud">🔊</button>
-        <h1 class="q">${QUESTION}</h1>
+        <div class="teacher-holder"></div>
+        <div class="bubble"><span class="bubble-text"></span>
+          <button type="button" class="speak" aria-label="Read aloud">🔊</button></div>
         <div class="prog" aria-hidden="true"></div>
       </header>
       <section class="stage"></section>
@@ -33,7 +34,8 @@ export async function runSession({ root, config, profile, theme, sound, save, sp
     </div>`;
 
   const play = root.querySelector('.play');
-  const q = root.querySelector('.q');
+  const teacherEl = root.querySelector('.teacher-holder');
+  const bubbleText = root.querySelector('.bubble-text');
   const stage = root.querySelector('.stage');
   const prog = root.querySelector('.prog');
   const btnLeft = root.querySelector('.ctl.left');
@@ -41,6 +43,10 @@ export async function runSession({ root, config, profile, theme, sound, save, sp
   const btnOk = root.querySelector('.ctl.ok');
   const track = new Track(root.querySelector('.track'), sound);
   for (let i = 0; i < total; i++) prog.appendChild(document.createElement('span'));
+
+  const teacher = (face) => setFace(teacherEl, 'teacher', face);
+  teacher('neutral');
+  const say = (text) => { bubbleText.textContent = text; };
 
   // ---- input: keys, on-screen buttons, and the track all feed one handler ----
   let handler = null;
@@ -68,9 +74,21 @@ export async function runSession({ root, config, profile, theme, sound, save, sp
   press(btnRight, { type: 'move', dir: 1, src: 'pointer' });
   press(btnOk, { type: 'ok', src: 'pointer' });
   track.onCell = (n) => emit({ type: 'cell', n, src: 'pointer' });
-  root.querySelector('.speak').addEventListener('click', () => speak(q.textContent));
+  root.querySelector('.speak').addEventListener('click', () => speak(bubbleText.textContent));
 
-  // Free answering: move anywhere, then confirm.
+  // Start step: she must put the bunny on `target` and confirm.
+  function waitStart(target) {
+    return new Promise((resolve) => {
+      let hops = 0;
+      setMode('start', (a) => {
+        if (a.type === 'move') { if (track.hop(a.dir)) hops += 1; }
+        else if (a.type === 'cell') { if (a.n !== track.value) { track.set(a.n, { sound: true }); hops += 1; } else if (a.n === target) { setMode('busy', null); resolve(hops); } }
+        else if (a.type === 'ok') { if (track.value === target) { setMode('busy', null); resolve(hops); } else track.wobble(); }
+      });
+    });
+  }
+
+  // Add step: move anywhere, then confirm.
   function waitAnswer() {
     return new Promise((resolve) => {
       let hops = 0;
@@ -81,14 +99,9 @@ export async function runSession({ root, config, profile, theme, sound, save, sp
       };
       setMode('answer', (a) => {
         used.add(a.src);
-        if (a.type === 'move') {
-          if (track.hop(a.dir)) hops += 1;
-        } else if (a.type === 'cell') {
-          if (a.n === track.value) finish();
-          else { track.set(a.n, { sound: true }); hops += 1; }
-        } else if (a.type === 'ok') {
-          finish();
-        }
+        if (a.type === 'move') { if (track.hop(a.dir)) hops += 1; }
+        else if (a.type === 'cell') { if (a.n === track.value) finish(); else { track.set(a.n, { sound: true }); hops += 1; } }
+        else if (a.type === 'ok') finish();
       });
     });
   }
@@ -110,120 +123,157 @@ export async function runSession({ root, config, profile, theme, sound, save, sp
     });
   }
 
-  // ---- showing an item ----
-  async function present(item) {
+  // ---- pieces of an item ----
+  function showStrip(item) {
     track.build(item.track);
-    track.set(item.given);
+    track.set(0, { anim: null });
+    track.face('neutral');
     stage.innerHTML = '';
-    const pic = GAMES[item.type].build(item, theme);
-    if (pic.flashes) pic.hideLoose();
-    stage.appendChild(pic.el);
-    if (pic.flashes) {
-      pic.cue();
-      await wait(700);
-      pic.showLoose();
-      await wait(S.flashMs);
-      pic.fadeLoose();
-      await wait(S.fadeMs);
-      pic.hideLoose();
-    } else {
-      await wait(300);
-    }
-    return pic;
+    const strip = buildStrip(item, theme);
+    stage.appendChild(strip.el);
+    return strip;
   }
 
-  async function celebrate(pic) {
-    pic.showLoose();
+  async function startStep(item, strip) {
+    teacher('neutral');
+    say('Start at ' + item.given);
+    strip.highlightFirst(true);
+    const hops = await waitStart(item.given);
+    strip.tickFirst();
+    track.bounce();
+    sound.soft();
+    await wait(400);
+    return hops;
+  }
+
+  async function showDots(item, strip) {
+    say('How many?');
+    track.face('thinking');
+    if (GAMES[item.type].flashes) {
+      strip.cue();
+      await wait(600);
+      strip.showDots();
+      await wait(S.flashMs);
+      strip.fadeDots();
+      await wait(S.fadeMs);
+      strip.hideDots();
+    } else {
+      strip.showDots();
+      await wait(300);
+    }
+  }
+
+  // The numeral under the bunny flies into the answer box.
+  async function flyAnswer(strip, n, ok) {
+    const from = track.numRect();
+    const to = strip.answerBox.getBoundingClientRect();
+    const flyer = document.createElement('span');
+    flyer.className = 'flyer';
+    flyer.textContent = String(n);
+    document.body.appendChild(flyer);
+    flyer.style.left = from.left + from.width / 2 + 'px';
+    flyer.style.top = from.top + from.height / 2 + 'px';
+    const dx = to.left + to.width / 2 - (from.left + from.width / 2);
+    const dy = to.top + to.height / 2 - (from.top + from.height / 2);
+    const anim = flyer.animate(
+      [{ transform: 'translate(-50%, -50%) scale(1)' }, { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(1.4)` }],
+      { duration: 550 / speed, easing: 'cubic-bezier(.3,.8,.4,1)' });
+    await anim.finished.catch(() => {});
+    flyer.remove();
+    strip.setAnswer(n, ok);
+  }
+
+  async function right(strip, n) {
+    await flyAnswer(strip, n, true);
+    track.face('happy');
+    track.bounce();
+    teacher('pleased');
+    say('Yes!');
+    strip.showDots();
     track.land();
     sound.land();
-    await wait(1100);
+    await wait(1200);
   }
 
   // After a miss: she performs the solution herself, one hop per loose dot.
-  async function guided(item, pic) {
+  async function guided(item, strip) {
     play.classList.add('guided');
-    pic.showLoose();
-    pic.loose.forEach((dot) => dot.classList.add('dim'));
+    strip.showDots();
+    strip.dimDots();
+    track.set(item.given, { sound: true });
+    track.face('thinking');
     await wait(500);
-    if (item.type !== 'cup' && item.given > 0) {
-      // A token is one big jump from 0 to its number.
-      track.set(0);
-      await wait(500);
-      track.set(item.given, { sound: true, big: true });
-      await wait(700);
-    } else {
-      track.set(item.given);
-    }
     btnRight.classList.add('pulse');
-    for (const dot of pic.loose) {
+    for (let i = 0; i < strip.loose.length; i++) {
       await waitHop();
       track.hop(1);
-      dot.classList.remove('dim');
-      dot.classList.add('lit');
+      strip.lightDot(i);
     }
     btnRight.classList.remove('pulse');
     track.land();
-    sound.land();
     btnOk.classList.add('pulse');
     await waitOk();
     btnOk.classList.remove('pulse');
     play.classList.remove('guided');
-    await wait(300);
+    await right(strip, item.answer);
   }
 
-  // Warm-up: the dots stay on screen, faded. Each hop makes one solid.
-  async function warmup(item) {
-    track.build(item.track);
-    track.set(item.given);
-    stage.innerHTML = '';
-    const pic = GAMES[item.type].build(item, theme);
-    stage.appendChild(pic.el);
-    await guided(item, pic);
+  async function wrong(item, strip, n) {
+    await flyAnswer(strip, n, false);
+    track.face('sad');
+    teacher('notyet');
+    say('Not yet');
+    await wait(1100);
+    strip.clearAnswer();
+    await guided(item, strip);
   }
 
-  // A full-screen card. With ms it passes by itself; without, it waits for ✓.
-  async function card(node, ms) {
+  // A full-screen card that waits for ✓.
+  async function card(text) {
     play.classList.add('card');
-    play.classList.toggle('timed', Boolean(ms));
     stage.innerHTML = '';
-    stage.appendChild(node);
-    if (ms) {
-      await wait(ms);
-    } else {
-      await wait(1500);
-      btnOk.classList.add('pulse');
-      await waitOk();
-      btnOk.classList.remove('pulse');
-    }
-    play.classList.remove('card', 'timed');
+    const p = document.createElement('p');
+    p.className = 'yourturn';
+    p.textContent = text;
+    stage.appendChild(p);
+    await wait(1200);
+    btnOk.classList.add('pulse');
+    await waitOk();
+    btnOk.classList.remove('pulse');
+    play.classList.remove('card');
   }
 
-  // The first time a skill appears: token meaning, warm-ups, then "Your turn".
+  // Warm-up: Start step, then the dots stay, faded, and each hop lights one.
+  async function warmup(item) {
+    const strip = showStrip(item);
+    await startStep(item, strip);
+    say('How many?');
+    await guided(item, strip);
+  }
+
+  // The first time a skill appears: warm-ups, then "Your turn".
   async function introduce(skillId) {
     if (profile.demos[skillId]) return;
     const skill = activeSkills(config).find((s) => s.id === skillId);
     if (!skill) return;
-    if (skill.intro) await card(tokenIntro(skill.intro, theme));
     const warmups = skill.warmup || [];
-    for (const [given, added] of warmups) {
-      await warmup(fixedItem(skill, given, added));
-    }
-    if (warmups.length) {
-      const turn = document.createElement('p');
-      turn.className = 'yourturn';
-      turn.textContent = 'Your turn';
-      await card(turn, 1800);
-    }
+    for (const [given, added] of warmups) await warmup(fixedItem(skill, given, added));
+    if (warmups.length) await card('Your turn');
     profile.demos[skillId] = true;
     save();
   }
 
   // ---- the session loop ----
   const session = profile.sessions.length + 1;
+  const plan = planSession(profile, config);
+  const picker = new Picker(plan, config, total);
+  const probeResults = [];
   const queue = []; // missed items waiting to come back
   let count = 0;
   let firstTry = 0;
   let prev = null;
+
+  await introduce(plan.skill.id);
 
   while (count < total) {
     let item;
@@ -234,11 +284,12 @@ export async function runSession({ root, config, profile, theme, sound, save, sp
       item = queue.splice(due, 1)[0].item;
       retry = true;
     } else {
-      ({ item, probe } = nextItem(profile, config, prev));
+      ({ item, probe } = picker.next(prev));
     }
 
-    await introduce(item.skill);
-    const pic = await present(item);
+    const strip = showStrip(item);
+    const startHops = await startStep(item, strip);
+    await showDots(item, strip);
     const started = performance.now();
     const answer = await waitAnswer();
     const ok = answer.value === item.answer;
@@ -254,17 +305,18 @@ export async function runSession({ root, config, profile, theme, sound, save, sp
       response_ms: Math.round(performance.now() - started),
       input: answer.input,
       hops: answer.hops,
+      start_hops: startHops,
       probe,
       retry,
     });
-    if (probe) recordProbe(profile, config, item.skill, ok);
+    if (!retry) picker.record(item, ok);
+    if (probe) probeResults.push(ok);
     if (ok) firstTry += 1;
     save();
 
-    if (ok) {
-      await celebrate(pic);
-    } else {
-      await guided(item, pic);
+    if (ok) await right(strip, answer.value);
+    else {
+      await wrong(item, strip, answer.value);
       if (!retry) queue.push({ item, due: count + 1 + S.requeueDistance });
     }
 
@@ -272,6 +324,10 @@ export async function runSession({ root, config, profile, theme, sound, save, sp
     count += 1;
     prev = item;
   }
+
+  if (plan.mode === 'placement') finishPlacement(profile, config, probeResults);
+  else updateProgress(profile, config);
+  save();
 
   document.removeEventListener('keydown', onKey);
   handler = null;

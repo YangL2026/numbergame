@@ -1,9 +1,12 @@
 {
-  "itemsPerSession": 12,
+  "itemsPerSession": 8,
   "sessionsPerDay": 2,
   "flashMs": 1500,
   "fadeMs": 600,
-  "reviewShare": 0.3,
+  "currentShare": 0.5,
+  "keepSucceeding": { "misses": 2, "window": 4 },
   "requeueDistance": 3,
-  "sounds": true
+  "sounds": true,
+  "teacherName": "Mr. Whiskers",
+  "bunnyNames": ["Pip", "Rosie", "Lulu", "Daisy"]
 }

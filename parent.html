@@ -30,7 +30,7 @@
     const P = profile.placement;
     let status;
     if (!profile.log.length) status = 'No sessions played yet.';
-    else if (!P.done) status = 'Placement is still running, currently checking ' + skills[P.index].id + '.';
+    else if (!P.done) status = 'Placement is still running, currently checking ' + skills[P.index].id + '. Each session probes one skill.';
     else if (P.top) status = 'Placement passed every skill built so far. Current skill: ' + profile.skill + '.';
     else status = 'Placement finished. Current skill: ' + profile.skill + '.';
 
@@ -47,7 +47,7 @@
     root.innerHTML = `
       <h1>Number Game: for parents</h1>
       <p>${status}</p>
-      <p class="note">Sessions played: ${profile.sessions.length}. Everything here is stored only in this browser.</p>
+      <p class="note">Bunny's name: ${profile.name || 'not chosen yet'}. Sessions played: ${profile.sessions.length}. Everything here is stored only in this browser.</p>
       <h2>Skills</h2>
       <table>
         <tr><th>Skill</th><th>Type</th><th>Status</th><th>Right on first try</th><th>Median time</th></tr>

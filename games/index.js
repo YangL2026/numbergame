@@ -1,6 +1,7 @@
-// Item types that have been built. A new type is one file plus one line here.
-import * as flash from './flash.js';
-import * as cup from './cup.js';
-import * as ten from './ten.js';
-
-export const GAMES = { flash, cup, ten };
+// Item types that have been built. Each says whether its dots flash and hide.
+// A new type is one entry here plus any drawing it needs in pieces.js.
+export const GAMES = {
+  flash: { flashes: true },
+  cup: { flashes: false },
+  ten: { flashes: true },
+};
